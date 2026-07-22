@@ -1,0 +1,11 @@
+# .github/metadata.yaml
+# Ratified URL-routing-stack migration package (2026-07-22).
+description: "HTML form encoding and decoding for Swift."
+topics:
+  - foundations
+  - html
+  - form-data
+  - multipart
+homepage: "https://swift-institute.org"
+readme:
+  family: F
