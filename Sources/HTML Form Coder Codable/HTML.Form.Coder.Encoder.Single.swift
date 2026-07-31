@@ -25,7 +25,7 @@ extension HTML.Form.Coder.Encoder {
         mutating func encode(_ value: String) throws {
             let encoded = WHATWG_Form_URL_Encoded.PercentEncoding.encode(
                 value,
-                spaceAsPlus: true
+                space: .plus
             )
             self.encoder.container = .singleValue(encoded)
         }

@@ -36,7 +36,7 @@ extension HTML.Form.Coder.Nested.Data {
         let raw = encodeWithStrategy(prefix: "", strategy: strategy)
 
         if percentEncode {
-            return WHATWG_Form_URL_Encoded.PercentEncoding.encode(raw, spaceAsPlus: true)
+            return WHATWG_Form_URL_Encoded.PercentEncoding.encode(raw, space: .plus)
         } else {
             return raw
         }

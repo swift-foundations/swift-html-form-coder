@@ -148,12 +148,12 @@ extension HTML.Form.Coder.Nested.Data {
                 guard
                     let name = try? WHATWG_Form_URL_Encoded.PercentEncoding.decode(
                         rawName,
-                        plusAsSpace: true
+                        space: .plus
                     )
                 else { return }
                 let value = try? WHATWG_Form_URL_Encoded.PercentEncoding.decode(
                     rawValue,
-                    plusAsSpace: true
+                    space: .plus
                 )
                 pairs.append((name, value))
             } else {
@@ -161,7 +161,7 @@ extension HTML.Form.Coder.Nested.Data {
                 guard
                     let name = try? WHATWG_Form_URL_Encoded.PercentEncoding.decode(
                         rawName,
-                        plusAsSpace: true
+                        space: .plus
                     )
                 else { return }
                 pairs.append((name, nil))
