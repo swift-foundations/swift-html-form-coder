@@ -1,7 +1,7 @@
 public import Foundation
-public import HTML_Standard
 public import HTML_Form_Coder
 import HTML_Form_Coder_Nested
+public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
 extension HTML.Form.Coder {
@@ -10,6 +10,8 @@ extension HTML.Form.Coder {
         package var container: Container {
             return containers.last!
         }
+        // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
+        // swiftlint:disable:next no_any_protocol_existential
         public package(set) var codingPath: [any CodingKey] = []
         public var dataDecodingStrategy: HTML.Form.Coder.Strategy.Data.Decoding
         public var dateDecodingStrategy: HTML.Form.Coder.Strategy.Date.Decoding
@@ -32,12 +34,18 @@ extension HTML.Form.Coder {
         public func decode<T: Decodable>(
             _ type: T.Type,
             from data: Foundation.Data
-        ) throws -> T {
+        ) throws(Error) -> T {
             let query = String(decoding: data, as: UTF8.self)
             let container = self.arrayParsingStrategy.parse(query)
             self.containers.append(container)
             defer { self.containers.removeLast() }
-            return try T(from: self)
+            do {
+                return try T(from: self)
+            } catch let error as HTML.Form.Coder.Decoder.Error {
+                throw error
+            } catch {
+                throw Error.decodingError(String(describing: error), self.codingPath)
+            }
         }
 
         package func unbox(_ container: Container) -> String? {
@@ -53,7 +61,7 @@ extension HTML.Form.Coder {
         package func unbox(
             _ value: Container,
             as type: Foundation.Data.Type
-        ) throws -> Foundation.Data {
+        ) throws(Error) -> Foundation.Data {
             guard let string = unbox(value) else {
                 throw Error.decodingError("Expected string data, got \(value)", self.codingPath)
             }
@@ -61,12 +69,18 @@ extension HTML.Form.Coder {
             // Decode the data using the strategy
             guard let data = self.dataDecodingStrategy.decode(string) else {
                 // If decode returns nil, it means we should use deferredToData
-                return try Foundation.Data(from: self)
+                do {
+                    return try Foundation.Data(from: self)
+                } catch let error as HTML.Form.Coder.Decoder.Error {
+                    throw error
+                } catch {
+                    throw Error.decodingError(String(describing: error), self.codingPath)
+                }
             }
             return data
         }
 
-        package func unbox(_ value: Container, as type: Date.Type) throws -> Date {
+        package func unbox(_ value: Container, as type: Date.Type) throws(Error) -> Date {
             guard let string = unbox(value) else {
                 throw Error.decodingError("Expected string date, got \(value)", self.codingPath)
             }
@@ -74,12 +88,18 @@ extension HTML.Form.Coder {
             // Decode the date using the strategy
             guard let date = self.dateDecodingStrategy.decode(string) else {
                 // If decode returns nil, it means we should use deferredToDate
-                return try Date(from: self)
+                do {
+                    return try Date(from: self)
+                } catch let error as HTML.Form.Coder.Decoder.Error {
+                    throw error
+                } catch {
+                    throw Error.decodingError(String(describing: error), self.codingPath)
+                }
             }
             return date
         }
 
-        package func unbox<T: Decodable>(_ value: Container, as type: T.Type) throws -> T {
+        package func unbox<T: Decodable>(_ value: Container, as type: T.Type) throws(Error) -> T {
             if type == Foundation.Data.self {
                 guard let result = try self.unbox(value, as: Foundation.Data.self) as? T else {
                     throw Error.decodingError(
@@ -105,11 +125,17 @@ extension HTML.Form.Coder {
                 }
                 return result
             } else {
-                return try T(from: self)
+                do {
+                    return try T(from: self)
+                } catch let error as HTML.Form.Coder.Decoder.Error {
+                    throw error
+                } catch {
+                    throw Error.decodingError(String(describing: error), self.codingPath)
+                }
             }
         }
 
-        package func unbox(_ value: Container, as type: Decimal.Type) throws -> Decimal {
+        package func unbox(_ value: Container, as type: Decimal.Type) throws(Error) -> Decimal {
             guard let string = unbox(value) else {
                 throw Error.decodingError("Expected string decimal, got \(value)", self.codingPath)
             }
@@ -123,7 +149,7 @@ extension HTML.Form.Coder {
 
         public func container<Key>(
             keyedBy type: Key.Type
-        ) throws
+        ) throws(Error)
             -> KeyedDecodingContainer<Key>
         where Key: CodingKey {
 
@@ -136,7 +162,9 @@ extension HTML.Form.Coder {
             return .init(KeyedContainer(decoder: self, container: container))
         }
 
-        public func unkeyedContainer() throws -> any UnkeyedDecodingContainer {
+        // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
+        // swiftlint:disable:next no_any_protocol_existential
+        public func unkeyedContainer() throws(Error) -> any UnkeyedDecodingContainer {
             switch self.container {
             case .unkeyed(let container):
                 return UnkeyedContainer(
@@ -144,6 +172,7 @@ extension HTML.Form.Coder {
                     container: container,
                     codingPath: self.codingPath
                 )
+
             case .singleValue(let value):
                 // For strategies like accumulateValues, treat a single value as an array with one element
                 if self.arrayParsingStrategy.handlesSingle {
@@ -159,6 +188,7 @@ extension HTML.Form.Coder {
                         self.codingPath
                     )
                 }
+
             default:
                 throw Error.decodingError(
                     "Expected unkeyed container, got \(self.container)",
@@ -167,7 +197,9 @@ extension HTML.Form.Coder {
             }
         }
 
-        public func singleValueContainer() throws -> any SingleValueDecodingContainer {
+        // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
+        // swiftlint:disable:next no_any_protocol_existential
+        public func singleValueContainer() -> any SingleValueDecodingContainer {
             return SingleValueContainer(decoder: self, container: self.container)
         }
 

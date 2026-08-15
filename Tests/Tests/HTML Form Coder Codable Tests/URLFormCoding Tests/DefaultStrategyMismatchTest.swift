@@ -1,9 +1,9 @@
-import HTML_Standard
 import Foundation
-import Testing
 import HTML_Form_Coder_Codable
+import HTML_Standard
+import Testing
 
-@Suite("Default Strategy Mismatch Tests")
+@Suite
 struct DefaultStrategyMismatchTests {
 
     struct SimpleArrayModel: Codable, Equatable {

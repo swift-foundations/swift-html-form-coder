@@ -1,6 +1,6 @@
-import HTML_Standard
 import Byte_Primitive
 import HTML_Form_Coder
+import HTML_Standard
 import Testing
 
 extension HTML.Form.Coder {

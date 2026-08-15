@@ -1,7 +1,7 @@
 import Foundation
-public import HTML_Standard
 public import HTML_Form_Coder
 import HTML_Form_Coder_Nested
+public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
 extension HTML.Form.Coder.Decoder {
@@ -14,6 +14,7 @@ extension HTML.Form.Coder.Decoder {
             switch self {
             case .keyed(let params):
                 return params
+
             case .unkeyed, .singleValue:
                 return nil
             }
@@ -23,6 +24,7 @@ extension HTML.Form.Coder.Decoder {
             switch self {
             case .unkeyed(let values):
                 return values
+
             case .keyed, .singleValue:
                 return nil
             }
@@ -32,6 +34,7 @@ extension HTML.Form.Coder.Decoder {
             switch self {
             case .singleValue(let value):
                 return value
+
             case .keyed, .unkeyed:
                 return nil
             }
@@ -44,8 +47,10 @@ extension HTML.Form.Coder.Decoder.Container: CustomStringConvertible {
         switch self {
         case .keyed(let values):
             return "keyed(\(values))"
+
         case .unkeyed(let values):
             return "unkeyed(\(values))"
+
         case .singleValue(let value):
             return "singleValue(\(String(reflecting: value)))"
         }

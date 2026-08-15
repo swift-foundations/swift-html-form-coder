@@ -1,7 +1,7 @@
 import Foundation
-public import HTML_Standard
 public import HTML_Form_Coder
 import HTML_Form_Coder_Nested
+public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
 extension HTML.Form.Coder.Decoder {
@@ -10,8 +10,10 @@ extension HTML.Form.Coder.Decoder {
         switch data {
         case .value(let value):
             .singleValue(value)
+
         case .array(let values):
             .unkeyed(values.map(Self.convert))
+
         case .dictionary(let values):
             .keyed(values.mapValues(Self.convert))
         }
@@ -23,7 +25,8 @@ extension HTML.Form.Coder.Decoder {
         sort: Bool = false
     ) -> @Sendable (String) -> Container {
         { query in
-            let sanitized = query
+            let sanitized =
+                query
                 .split(separator: "&", omittingEmptySubsequences: true)
                 .joined(separator: "&")
             guard !sanitized.isEmpty else {

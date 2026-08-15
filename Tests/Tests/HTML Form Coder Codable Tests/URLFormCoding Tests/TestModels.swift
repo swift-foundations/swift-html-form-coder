@@ -1,12 +1,12 @@
+import Foundation
 import HTML_Standard
+
 //
 //  TestModels.swift
 //  URLFormCoding Tests
 //
 //  Created by Coen ten Thije Boonkkamp on 26/07/2025.
 //
-
-import Foundation
 
 // MARK: - Shared Test Models
 

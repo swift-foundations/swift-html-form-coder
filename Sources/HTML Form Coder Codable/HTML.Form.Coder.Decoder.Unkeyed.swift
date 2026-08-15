@@ -1,7 +1,7 @@
 import Foundation
-public import HTML_Standard
 public import HTML_Form_Coder
 import HTML_Form_Coder_Nested
+public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
 extension HTML.Form.Coder.Decoder {
@@ -10,6 +10,8 @@ extension HTML.Form.Coder.Decoder {
         let decoder: HTML.Form.Coder.Decoder
         let container: [Container]
 
+        // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
+        // swiftlint:disable:next no_any_protocol_existential
         private(set) var codingPath: [any CodingKey]
         var count: Int? {
             return self.container.count
@@ -19,13 +21,16 @@ extension HTML.Form.Coder.Decoder {
         }
         private(set) var currentIndex: Int = 0
 
-        init(decoder: HTML.Form.Coder.Decoder, container: [Container], codingPath: [any CodingKey]) {
+        // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
+        // swiftlint:disable:next no_any_protocol_existential
+        init(decoder: HTML.Form.Coder.Decoder, container: [Container], codingPath: [any CodingKey])
+        {
             self.decoder = decoder
             self.container = container
             self.codingPath = codingPath
         }
 
-        mutating private func checked<T>(_ block: (String) throws -> T) throws -> T {
+        private mutating func checked<T>(_ block: (String) throws(Error) -> T) throws(Error) -> T {
             guard !self.isAtEnd else {
                 throw Error.decodingError("Unkeyed container is at end", self.codingPath)
             }
@@ -42,7 +47,7 @@ extension HTML.Form.Coder.Decoder {
             return value
         }
 
-        mutating private func unwrap<T>(_ block: (String) -> T?) throws -> T {
+        private mutating func unwrap<T>(_ block: (String) -> T?) throws(Error) -> T {
             guard let value = try self.checked(block) else {
                 throw Error.decodingError(
                     "Expected \(T.self) at \(self.currentIndex), got nil",
@@ -52,71 +57,71 @@ extension HTML.Form.Coder.Decoder {
             return value
         }
 
-        mutating func decodeNil() throws -> Bool {
+        mutating func decodeNil() throws(Error) -> Bool {
             return try self.unwrap { $0.isEmpty }
         }
 
-        mutating func decode(_ type: Bool.Type) throws -> Bool {
+        mutating func decode(_ type: Bool.Type) throws(Error) -> Bool {
             return try self.unwrap(self.decoder.boolDecodingStrategy.decode)
         }
 
-        mutating func decode(_ type: Int.Type) throws -> Int {
+        mutating func decode(_ type: Int.Type) throws(Error) -> Int {
             return try self.unwrap(Int.init)
         }
 
-        mutating func decode(_ type: Int8.Type) throws -> Int8 {
+        mutating func decode(_ type: Int8.Type) throws(Error) -> Int8 {
             return try self.unwrap(Int8.init)
         }
 
-        mutating func decode(_ type: Int16.Type) throws -> Int16 {
+        mutating func decode(_ type: Int16.Type) throws(Error) -> Int16 {
             return try self.unwrap(Int16.init)
         }
 
-        mutating func decode(_ type: Int32.Type) throws -> Int32 {
+        mutating func decode(_ type: Int32.Type) throws(Error) -> Int32 {
             return try self.unwrap(Int32.init)
         }
 
-        mutating func decode(_ type: Int64.Type) throws -> Int64 {
+        mutating func decode(_ type: Int64.Type) throws(Error) -> Int64 {
             return try self.unwrap(Int64.init)
         }
 
-        mutating func decode(_ type: UInt.Type) throws -> UInt {
+        mutating func decode(_ type: UInt.Type) throws(Error) -> UInt {
             return try self.unwrap(UInt.init)
         }
 
-        mutating func decode(_ type: UInt8.Type) throws -> UInt8 {
+        mutating func decode(_ type: UInt8.Type) throws(Error) -> UInt8 {
             return try self.unwrap(UInt8.init)
         }
 
-        mutating func decode(_ type: UInt16.Type) throws -> UInt16 {
+        mutating func decode(_ type: UInt16.Type) throws(Error) -> UInt16 {
             return try self.unwrap(UInt16.init)
         }
 
-        mutating func decode(_ type: UInt32.Type) throws -> UInt32 {
+        mutating func decode(_ type: UInt32.Type) throws(Error) -> UInt32 {
             return try self.unwrap(UInt32.init)
         }
 
-        mutating func decode(_ type: UInt64.Type) throws -> UInt64 {
+        mutating func decode(_ type: UInt64.Type) throws(Error) -> UInt64 {
             return try self.unwrap(UInt64.init)
         }
 
-        mutating func decode(_ type: Float.Type) throws -> Float {
+        mutating func decode(_ type: Float.Type) throws(Error) -> Float {
             return try self.unwrap(Float.init)
         }
 
-        mutating func decode(_ type: Double.Type) throws -> Double {
+        mutating func decode(_ type: Double.Type) throws(Error) -> Double {
             return try self.unwrap(Double.init)
         }
 
-        mutating func decode(_ type: String.Type) throws -> String {
+        mutating func decode(_ type: String.Type) throws(Error) -> String {
             return try self.unwrap(id)
         }
 
-        mutating func decode(_ type: Decimal.Type) throws -> Decimal {
+        mutating func decode(_ type: Decimal.Type) throws(Error) -> Decimal {
             return try self.unwrap { Decimal(string: $0) ?? Decimal() }
         }
 
-        mutating func decode<T>(_ type: T.Type) throws -> T where T: Decodable {
+        mutating func decode<T>(_ type: T.Type) throws(Error) -> T where T: Decodable {
             guard !self.isAtEnd else {
                 throw Error.decodingError("Unkeyed container is at end", self.codingPath)
             }
@@ -131,7 +136,7 @@ extension HTML.Form.Coder.Decoder {
 
         mutating func nestedContainer<NestedKey>(
             keyedBy type: NestedKey.Type
-        ) throws
+        ) throws(Error)
             -> KeyedDecodingContainer<NestedKey>
         where NestedKey: CodingKey {
 
@@ -152,7 +157,9 @@ extension HTML.Form.Coder.Decoder {
             return .init(KeyedContainer(decoder: self.decoder, container: container))
         }
 
-        mutating func nestedUnkeyedContainer() throws -> any UnkeyedDecodingContainer {
+        // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
+        // swiftlint:disable:next no_any_protocol_existential
+        mutating func nestedUnkeyedContainer() throws(Error) -> any UnkeyedDecodingContainer {
             guard !self.isAtEnd else {
                 throw Error.decodingError("Unkeyed container is at end", self.codingPath)
             }
@@ -174,7 +181,9 @@ extension HTML.Form.Coder.Decoder {
             )
         }
 
-        mutating func superDecoder() throws -> any Swift.Decoder {
+        // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
+        // swiftlint:disable:next no_any_protocol_existential
+        mutating func superDecoder() throws(Error) -> any Swift.Decoder {
             guard !self.isAtEnd else {
                 throw Error.decodingError("Unkeyed container is at end", self.codingPath)
             }

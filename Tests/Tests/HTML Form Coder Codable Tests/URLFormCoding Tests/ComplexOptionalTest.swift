@@ -1,4 +1,8 @@
+import Foundation
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  ComplexOptionalTest.swift
 //  URLFormCoding Tests
@@ -6,11 +10,7 @@ import HTML_Standard
 //  Testing complex types in optionals
 //
 
-import Foundation
-import Testing
-import HTML_Form_Coder_Codable
-
-@Suite("Complex Optional Tests")
+@Suite
 struct ComplexOptionalTests {
 
     // A complex type that uses keyed encoding

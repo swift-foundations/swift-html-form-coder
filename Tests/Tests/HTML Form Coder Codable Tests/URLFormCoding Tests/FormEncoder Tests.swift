@@ -1,14 +1,14 @@
+import Foundation
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  HTML.Form.Coder.Encoder Tests.swift
 //  URLFormCoding Tests
 //
 //  Created by Coen ten Thije Boonkkamp on 26/07/2025.
 //
-
-import Foundation
-import Testing
-import HTML_Form_Coder_Codable
 
 // MARK: - Main Test Suite
 

@@ -1,6 +1,6 @@
 package import Foundation
-public import HTML_Standard
 public import HTML_Form_Coder
+public import HTML_Standard
 
 extension HTML.Form.Coder.Strategy.Date {
     package enum Format {

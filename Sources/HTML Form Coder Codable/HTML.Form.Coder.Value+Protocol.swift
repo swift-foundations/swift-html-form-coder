@@ -1,6 +1,6 @@
 public import Foundation
-public import HTML_Standard
 public import HTML_Form_Coder
+public import HTML_Standard
 public import HTTP_Body
 import Media_Type_Standard
 
@@ -12,7 +12,9 @@ extension HTML.Form.Coder.Value: RFC_9110.Body.Coder.`Protocol` {
 
     public var body: Never {
         borrowing get {
-            return fatalError("leaf codec — parse(_:) and serialize(_:into:) are implemented directly")
+            return fatalError(
+                "leaf codec — parse(_:) and serialize(_:into:) are implemented directly"
+            )
         }
     }
 

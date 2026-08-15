@@ -1,13 +1,13 @@
+import HTML_Form_Coder_Nested
 import HTML_Standard
+import Testing
+
 //
 //  ReadmeVerificationTests.swift
 //  swift-rfc-2388
 //
 //  Verifies that README code examples actually work
 //
-
-import HTML_Form_Coder_Nested
-import Testing
 
 @Suite
 struct `README Verification` {
@@ -22,7 +22,10 @@ struct `README Verification` {
 
     @Test
     func `README Line 37-39: Parse arrays with bracket notation`() throws {
-        let tags = HTML.Form.Coder.Nested.Data.parse("tags[]=swift&tags[]=vapor", strategy: .brackets)
+        let tags = HTML.Form.Coder.Nested.Data.parse(
+            "tags[]=swift&tags[]=vapor",
+            strategy: .brackets
+        )
 
         let tagsArray = tags.dictionaryValue?["tags"]?.arrayValue
         #expect(tagsArray?.count == 2)
@@ -80,7 +83,10 @@ struct `README Verification` {
 
     @Test
     func `README Line 76-78: Brackets strategy parsing`() throws {
-        let result = HTML.Form.Coder.Nested.Data.parse("tags[]=value1&tags[]=value2", strategy: .brackets)
+        let result = HTML.Form.Coder.Nested.Data.parse(
+            "tags[]=value1&tags[]=value2",
+            strategy: .brackets
+        )
 
         let tags = result.dictionaryValue?["tags"]?.arrayValue
         #expect(tags?.count == 2)
@@ -103,7 +109,10 @@ struct `README Verification` {
 
     @Test
     func `README Line 86-88: Accumulate values parsing`() throws {
-        let result = HTML.Form.Coder.Nested.Data.parse("color=red&color=blue", strategy: .accumulateValues)
+        let result = HTML.Form.Coder.Nested.Data.parse(
+            "color=red&color=blue",
+            strategy: .accumulateValues
+        )
 
         let colors = result.dictionaryValue?["color"]?.arrayValue
         #expect(colors?.count == 2)

@@ -5,8 +5,8 @@
 //  RFC 2388: Returning Values from Forms: multipart/form-data
 //
 
-public import HTML_Standard
 public import HTML_Form_Coder
+public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
 extension HTML.Form.Coder.Nested.Data {
@@ -49,6 +49,7 @@ extension HTML.Form.Coder.Nested.Data {
                 segment.isEmpty || Int(segment) != nil
             }
             return parseBracketNotation(query, isArray: isArray, sort: sort)
+
         case .accumulateValues:
             return parseAccumulateValues(query, sort: sort)
         }
@@ -87,7 +88,10 @@ extension HTML.Form.Coder.Nested.Data {
     ///   - query: The URL-encoded query string
     ///   - sort: Whether to sort key-value pairs before parsing
     /// - Returns: Parsed HTML.Form.Coder.Nested.Data structure
-    private static func parseAccumulateValues(_ query: String, sort: Bool) -> HTML.Form.Coder.Nested.Data {
+    private static func parseAccumulateValues(
+        _ query: String,
+        sort: Bool
+    ) -> HTML.Form.Coder.Nested.Data {
         var params: [String: HTML.Form.Coder.Nested.Data] = [:]
 
         for (name, value) in extractPairs(from: query, sort: sort) {
@@ -146,12 +150,12 @@ extension HTML.Form.Coder.Nested.Data {
                 let rawName = String(decoding: bytes[lo..<eq], as: UTF8.self)
                 let rawValue = String(decoding: bytes[(eq &+ 1)..<hi], as: UTF8.self)
                 guard
-                    let name = try? WHATWG_Form_URL_Encoded.PercentEncoding.decode(
+                    let name = WHATWG_Form_URL_Encoded.PercentEncoding.decodeOrNil(
                         rawName,
                         space: .plus
                     )
                 else { return }
-                let value = try? WHATWG_Form_URL_Encoded.PercentEncoding.decode(
+                let value = WHATWG_Form_URL_Encoded.PercentEncoding.decodeOrNil(
                     rawValue,
                     space: .plus
                 )
@@ -159,7 +163,7 @@ extension HTML.Form.Coder.Nested.Data {
             } else {
                 let rawName = String(decoding: bytes[lo..<hi], as: UTF8.self)
                 guard
-                    let name = try? WHATWG_Form_URL_Encoded.PercentEncoding.decode(
+                    let name = WHATWG_Form_URL_Encoded.PercentEncoding.decodeOrNil(
                         rawName,
                         space: .plus
                     )
@@ -196,9 +200,11 @@ extension HTML.Form.Coder.Nested.Data {
                     result.path.append(result.current)
                     result.current.removeAll()
                 }
+
             case "]":
                 result.path.append(result.current)
                 result.current.removeAll()
+
             default:
                 result.current.append(char)
             }

@@ -1,5 +1,5 @@
-import HTML_Standard
 import Foundation
+import HTML_Standard
 import Testing
 
 @testable import HTML_Form_Coder_Codable
@@ -75,7 +75,7 @@ struct BracketsStrategyTests {
     }
 }
 
-@Suite("Custom Strategy Tests")
+@Suite
 struct CustomStrategyTests {
 
     @Test("Custom parsing strategy with special delimiter")
@@ -162,7 +162,7 @@ struct CustomStrategyTests {
     }
 }
 
-@Suite("Thread Safety Tests")
+@Suite
 struct ThreadSafetyTests {
 
     @Test("Concurrent encoding is thread-safe")
@@ -209,7 +209,9 @@ struct ThreadSafetyTests {
             for data in testData {
                 group.addTask {
                     // Create decoder per task
-                    let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+                    let decoder = HTML.Form.Coder.Decoder(
+                        arrayParsingStrategy: .bracketsWithIndices
+                    )
                     return try decoder.decode(Model.self, from: data)
                 }
             }

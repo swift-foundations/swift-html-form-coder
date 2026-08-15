@@ -1,14 +1,14 @@
+import Foundation
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  BracketsStrategyTests.swift
 //  URLFormCoding Tests
 //
 //  Created for testing the .brackets strategy for encoding/decoding arrays
 //
-
-import Foundation
-import Testing
-import HTML_Form_Coder_Codable
 
 @Suite("Brackets Strategy Tests")
 struct BracketsStrategyEncodingTests {
