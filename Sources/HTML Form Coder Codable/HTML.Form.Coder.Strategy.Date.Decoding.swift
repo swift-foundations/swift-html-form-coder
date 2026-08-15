@@ -1,6 +1,6 @@
 public import Foundation
-public import HTML_Standard
 public import HTML_Form_Coder
+public import HTML_Standard
 
 extension HTML.Form.Coder.Strategy.Date {
     public struct Decoding: @unchecked Sendable {
@@ -11,7 +11,9 @@ extension HTML.Form.Coder.Strategy.Date {
         }
 
         public static let deferred = Self { _ in nil }
-        public static let seconds = Self { Double($0).map(Foundation.Date.init(timeIntervalSince1970:)) }
+        public static let seconds = Self {
+            Double($0).map(Foundation.Date.init(timeIntervalSince1970:))
+        }
         public static let milliseconds = Self {
             Double($0).map { Foundation.Date(timeIntervalSince1970: $0 / 1_000) }
         }

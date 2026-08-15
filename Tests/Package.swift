@@ -15,7 +15,10 @@ let package = Package(
         .package(path: ".."),
         .package(url: "https://github.com/swift-standards/swift-html-standard.git", branch: "main"),
         .package(url: "https://github.com/swift-whatwg/swift-whatwg-html.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-byte-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-primitives/swift-byte-primitives.git",
+            branch: "main"
+        ),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2045.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2046.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2183.git", branch: "main"),
@@ -44,7 +47,7 @@ let package = Package(
                 .product(name: "RFC 7578", package: "swift-rfc-7578"),
             ],
             exclude: [
-                "Multipart Form Coding Parity Tests/__Corpus__",
+                "Multipart Form Coding Parity Tests/__Corpus__"
             ]
         ),
         .testTarget(
@@ -61,7 +64,7 @@ let package = Package(
                 .product(name: "HTML Standard", package: "swift-html-standard"),
             ],
             exclude: [
-                "URL Form Coding Parity Tests/__Corpus__",
+                "URL Form Coding Parity Tests/__Corpus__"
             ]
         ),
     ],

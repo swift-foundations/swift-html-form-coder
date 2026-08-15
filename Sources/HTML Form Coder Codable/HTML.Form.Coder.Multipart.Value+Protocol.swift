@@ -1,14 +1,14 @@
 public import Foundation
-public import HTML_Standard
-public import WHATWG_HTML_FormData
 public import HTML_Form_Coder
 public import HTML_Form_Coder_Multipart
+public import HTML_Standard
 public import HTTP_Body
 import Media_Type_Standard
 import RFC_2045
 import RFC_2046
 import RFC_2183
 import RFC_7578
+public import WHATWG_HTML_FormData
 
 extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
     public typealias Input = [Byte]
@@ -18,7 +18,9 @@ extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
 
     public var body: Never {
         borrowing get {
-            return fatalError("leaf codec — parse(_:) and serialize(_:into:) are implemented directly")
+            return fatalError(
+                "leaf codec — parse(_:) and serialize(_:into:) are implemented directly"
+            )
         }
     }
 
@@ -70,16 +72,17 @@ extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
             let entries = HTML.Form.Data.Entry.List(
                 entries: fields.fields.map {
                     HTML.Form.Data.Entry(name: $0.name, stringValue: $0.value)
-                } + fields.files.map {
-                    HTML.Form.Data.Entry(
-                        name: $0.fieldName,
-                        file: HTML.Form.Data.File(
-                            name: $0.filename.value,
-                            type: $0.contentType?.headerValue ?? "",
-                            body: $0.content
-                        )
-                    )
                 }
+                    + fields.files.map {
+                        HTML.Form.Data.Entry(
+                            name: $0.fieldName,
+                            file: HTML.Form.Data.File(
+                                name: $0.filename.value,
+                                type: $0.contentType?.headerValue ?? "",
+                                body: $0.content
+                            )
+                        )
+                    }
             )
             return try HTML.Form.Coder.Multipart(boundary: boundary).encode(
                 entries,
