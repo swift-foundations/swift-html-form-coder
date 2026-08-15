@@ -13,6 +13,7 @@ import Byte_Primitive
 // ===----------------------------------------------------------------------===//
 
 import Foundation
+import HTTP_Body
 import RFC_2045
 import RFC_2046
 import RFC_2183
@@ -21,6 +22,7 @@ import Testing
 import WHATWG_HTML_FormData
 import WHATWG_HTML_Forms
 
+import HTML_Form_Coder
 @testable import HTML_Form_Coder_Multipart
 
 @Suite

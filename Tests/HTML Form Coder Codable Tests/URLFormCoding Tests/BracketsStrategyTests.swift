@@ -8,6 +8,7 @@ import HTML_Standard
 
 import Foundation
 import Testing
+import HTML_Form_Coder
 import HTML_Form_Coder_Codable
 
 @Suite("Brackets Strategy Tests")

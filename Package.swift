@@ -90,6 +90,7 @@ let package = Package(
             dependencies: [
                 "HTML Form Coder",
                 .product(name: "HTML Standard", package: "swift-html-standard"),
+                .product(name: "WHATWG HTML FormData", package: "swift-whatwg-html"),
                 .product(name: "Byte Primitive", package: "swift-byte-primitives"),
             ],
             path: "Tests/HTML Form Coder Tests"
@@ -97,6 +98,7 @@ let package = Package(
         .testTarget(
             name: "HTML Form Coder Multipart Tests",
             dependencies: [
+                "HTML Form Coder",
                 "HTML Form Coder Multipart",
                 .product(name: "HTML Standard", package: "swift-html-standard"),
                 .product(name: "WHATWG HTML Forms", package: "swift-whatwg-html"),
@@ -116,6 +118,7 @@ let package = Package(
         .testTarget(
             name: "HTML Form Coder Nested Tests",
             dependencies: [
+                "HTML Form Coder",
                 "HTML Form Coder Nested",
                 .product(name: "HTML Standard", package: "swift-html-standard"),
             ],
@@ -124,6 +127,7 @@ let package = Package(
         .testTarget(
             name: "HTML Form Coder Codable Tests",
             dependencies: [
+                "HTML Form Coder",
                 "HTML Form Coder Codable",
                 .product(name: "HTML Standard", package: "swift-html-standard"),
             ],

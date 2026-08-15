@@ -17,7 +17,9 @@ import HTML_Standard
 
 import Foundation
 import Byte_Primitive
+import HTML_Form_Coder
 import HTML_Form_Coder_Multipart
+import HTTP_Body
 import RFC_2045
 import RFC_2046
 import Testing

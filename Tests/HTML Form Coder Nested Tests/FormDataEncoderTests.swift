@@ -6,6 +6,7 @@ import HTML_Standard
 //  RFC 2388: Returning Values from Forms: multipart/form-data
 //
 
+import HTML_Form_Coder
 import Testing
 
 @testable import HTML_Form_Coder_Nested

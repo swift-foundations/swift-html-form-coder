@@ -6,6 +6,7 @@ import HTML_Standard
 //  Verifies that README code examples actually work
 //
 
+import HTML_Form_Coder
 import HTML_Form_Coder_Nested
 import Testing
 

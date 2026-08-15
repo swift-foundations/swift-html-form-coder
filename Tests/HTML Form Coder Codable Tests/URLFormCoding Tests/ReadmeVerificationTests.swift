@@ -1,6 +1,7 @@
 import HTML_Standard
 import Testing
 
+import HTML_Form_Coder
 @testable import HTML_Form_Coder_Codable
 
 @Suite("README Verification")
