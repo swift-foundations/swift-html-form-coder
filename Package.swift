@@ -85,6 +85,53 @@ let package = Package(
                 .product(name: "RFC 7578", package: "swift-rfc-7578"),
             ]
         ),
+        .testTarget(
+            name: "HTML Form Coder Tests",
+            dependencies: [
+                "HTML Form Coder",
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+            ],
+            path: "Tests/HTML Form Coder Tests"
+        ),
+        .testTarget(
+            name: "HTML Form Coder Multipart Tests",
+            dependencies: [
+                "HTML Form Coder Multipart",
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+                .product(name: "WHATWG HTML Forms", package: "swift-whatwg-html"),
+                .product(name: "WHATWG HTML FormData", package: "swift-whatwg-html"),
+                .product(name: "HTTP Body", package: "swift-http-body"),
+                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+                .product(name: "RFC 2045", package: "swift-rfc-2045"),
+                .product(name: "RFC 2046", package: "swift-rfc-2046"),
+                .product(name: "RFC 2183", package: "swift-rfc-2183"),
+                .product(name: "RFC 7578", package: "swift-rfc-7578"),
+            ],
+            path: "Tests/HTML Form Coder Multipart Tests",
+            exclude: [
+                "Multipart Form Coding Parity Tests/__Corpus__",
+            ]
+        ),
+        .testTarget(
+            name: "HTML Form Coder Nested Tests",
+            dependencies: [
+                "HTML Form Coder Nested",
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+            ],
+            path: "Tests/HTML Form Coder Nested Tests"
+        ),
+        .testTarget(
+            name: "HTML Form Coder Codable Tests",
+            dependencies: [
+                "HTML Form Coder Codable",
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+            ],
+            path: "Tests/HTML Form Coder Codable Tests",
+            exclude: [
+                "URL Form Coding Parity Tests/__Corpus__",
+            ]
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
