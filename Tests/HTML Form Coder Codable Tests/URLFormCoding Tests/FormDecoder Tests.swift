@@ -1,15 +1,15 @@
+import Foundation
+import HTML_Form_Coder
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  HTML.Form.Coder.Decoder Tests.swift
 //  URLFormCoding Tests
 //
 //  Created by Coen ten Thije Boonkkamp on 26/07/2025.
 //
-
-import Foundation
-import Testing
-import HTML_Form_Coder
-import HTML_Form_Coder_Codable
 
 // MARK: - Main Test Suite
 
@@ -576,14 +576,19 @@ struct FormDecoderTests {
                         if let existing = params[key] {
                             // If key exists, convert to array or append to array
                             if case .singleValue(let existingValue) = existing {
-                                let existingContainer = HTML.Form.Coder.Decoder.Container.singleValue(
-                                    existingValue
+                                let existingContainer = HTML.Form.Coder.Decoder.Container
+                                    .singleValue(
+                                        existingValue
+                                    )
+                                let newContainer = HTML.Form.Coder.Decoder.Container.singleValue(
+                                    value
                                 )
-                                let newContainer = HTML.Form.Coder.Decoder.Container.singleValue(value)
                                 params[key] = .unkeyed([existingContainer, newContainer])
                             } else if case .unkeyed(let existingValues) = existing {
                                 var newValues = existingValues
-                                let valueContainer = HTML.Form.Coder.Decoder.Container.singleValue(value)
+                                let valueContainer = HTML.Form.Coder.Decoder.Container.singleValue(
+                                    value
+                                )
                                 newValues.append(valueContainer)
                                 params[key] = .unkeyed(newValues)
                             }

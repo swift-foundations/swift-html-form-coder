@@ -1,10 +1,10 @@
 public import Byte_Primitive
-public import HTML_Standard
-public import WHATWG_HTML_FormData
 public import HTML_Form_Coder
+public import HTML_Standard
 public import HTTP_Body
 internal import Media_Type_Standard
 public import RFC_2046
+public import WHATWG_HTML_FormData
 
 extension HTML.Form.Coder.Multipart: RFC_9110.Body.Coder.`Protocol` {
     public typealias Input = [Byte]
@@ -16,7 +16,9 @@ extension HTML.Form.Coder.Multipart: RFC_9110.Body.Coder.`Protocol` {
     @inlinable
     public var body: Never {
         borrowing get {
-            return fatalError("leaf codec — parse(_:) and serialize(_:into:) are implemented directly")
+            return fatalError(
+                "leaf codec — parse(_:) and serialize(_:into:) are implemented directly"
+            )
         }
     }
 

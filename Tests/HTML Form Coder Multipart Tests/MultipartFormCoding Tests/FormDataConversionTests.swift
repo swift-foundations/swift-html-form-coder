@@ -1,5 +1,18 @@
-import HTML_Standard
 import Byte_Primitive
+import Foundation
+import HTML_Form_Coder
+import HTML_Standard
+import HTTP_Body
+import RFC_2045
+import RFC_2046
+import RFC_2183
+import RFC_7578
+import Testing
+import WHATWG_HTML_FormData
+import WHATWG_HTML_Forms
+
+@testable import HTML_Form_Coder_Multipart
+
 // ===----------------------------------------------------------------------===//
 //
 // Copyright (c) 2025 Coen ten Thije Boonkkamp
@@ -11,19 +24,6 @@ import Byte_Primitive
 // SPDX-License-Identifier: Apache-2.0
 //
 // ===----------------------------------------------------------------------===//
-
-import Foundation
-import HTTP_Body
-import RFC_2045
-import RFC_2046
-import RFC_2183
-import RFC_7578
-import Testing
-import WHATWG_HTML_FormData
-import WHATWG_HTML_Forms
-
-import HTML_Form_Coder
-@testable import HTML_Form_Coder_Multipart
 
 @Suite
 struct FormDataConversionTests {
@@ -167,7 +167,7 @@ struct FormDataConversionTests {
     func `Content-Type header generation`() throws {
         // Arrange
         let formData = HTML.Form.Data.Entry.List(entries: [
-            .init(name: "name", stringValue: "Blob"),
+            .init(name: "name", stringValue: "Blob")
         ])
 
         // Act

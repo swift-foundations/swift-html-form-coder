@@ -1,11 +1,11 @@
+import Foundation
 import HTML_Standard
+import Testing
+
 // Batch-0 parity corpus: tiny local fixture helper (compare-or-record).
 //
 // Intentionally self-contained so this package does not gain a dependency on
 // swift-url-routing's URL Routing Test Support.
-
-import Foundation
-import Testing
 
 enum Corpus {
     static let directory = URL(fileURLWithPath: #filePath)

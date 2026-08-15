@@ -1,4 +1,15 @@
+import Byte_Primitive
+import Foundation
+import HTML_Form_Coder
+import HTML_Form_Coder_Multipart
 import HTML_Standard
+import HTTP_Body
+import RFC_2045
+import RFC_2046
+import Testing
+import WHATWG_HTML_FormData
+import WHATWG_HTML_Forms
+
 // Batch-0 parity corpus: FormData/Multipart veneer wire-shape snapshots.
 //
 // Encodes a representative HTML.Form.Data.Entry.List (text fields, repeated field
@@ -14,17 +25,6 @@ import HTML_Standard
 // dossier B2-06) live in swift-url-routing's RFC_2046.Multipart.Encoder, not
 // in this package's surface; MultipartFormCoding exposes no Bool or array
 // strategy axis. See __Corpus__/NOTES.txt.
-
-import Foundation
-import Byte_Primitive
-import HTML_Form_Coder
-import HTML_Form_Coder_Multipart
-import HTTP_Body
-import RFC_2045
-import RFC_2046
-import Testing
-import WHATWG_HTML_FormData
-import WHATWG_HTML_Forms
 
 @Suite("Multipart Coder Parity")
 struct MultipartCoderParityTests {

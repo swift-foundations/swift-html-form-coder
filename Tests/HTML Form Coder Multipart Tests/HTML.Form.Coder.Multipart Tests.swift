@@ -1,11 +1,11 @@
-import HTML_Standard
 import Byte_Primitive
 import HTML_Form_Coder
 import HTML_Form_Coder_Multipart
+import HTML_Standard
 import HTTP_Body
 import RFC_2046
-import WHATWG_HTML_FormData
 import Testing
+import WHATWG_HTML_FormData
 
 extension HTML.Form.Coder.Multipart {
     @Suite
@@ -18,7 +18,7 @@ extension HTML.Form.Coder.Multipart.Test {
         let boundary = try RFC_2046.Boundary("----=_Part_0123456789abcdef0123456789abcdef")
         let coder = HTML.Form.Coder.Multipart(boundary: boundary)
         let expected = HTML.Form.Data.Entry.List(entries: [
-            .init(name: "name", stringValue: "Blob"),
+            .init(name: "name", stringValue: "Blob")
         ])
         var bytes: [Byte] = []
 

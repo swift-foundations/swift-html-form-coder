@@ -1,4 +1,9 @@
+import Foundation
+import HTML_Form_Coder
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  EdgeCaseEncodingTest.swift
 //  URLFormCoding Tests
@@ -6,12 +11,7 @@ import HTML_Standard
 //  Test edge cases for the optional encoding fix
 //
 
-import Foundation
-import Testing
-import HTML_Form_Coder
-import HTML_Form_Coder_Codable
-
-@Suite("Edge Case Encoding Tests")
+@Suite
 struct EdgeCaseEncodingTests {
 
     // Test various types that might trigger the issue

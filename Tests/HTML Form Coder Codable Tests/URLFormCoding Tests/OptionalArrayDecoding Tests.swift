@@ -1,8 +1,8 @@
-import HTML_Standard
 import Foundation
+import HTML_Form_Coder
+import HTML_Standard
 import Testing
 
-import HTML_Form_Coder
 @testable import HTML_Form_Coder_Codable
 
 @Suite("Optional Array Decoding with bracketsWithIndices")

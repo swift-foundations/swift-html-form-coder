@@ -1,5 +1,5 @@
-public import HTML_Standard
 public import HTML_Form_Coder
+public import HTML_Standard
 public import RFC_2046
 
 extension HTML.Form.Coder {

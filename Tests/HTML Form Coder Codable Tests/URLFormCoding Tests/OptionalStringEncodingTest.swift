@@ -1,4 +1,9 @@
+import Foundation
+import HTML_Form_Coder
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  OptionalStringEncodingTest.swift
 //  URLFormCoding Tests
@@ -6,12 +11,7 @@ import HTML_Standard
 //  Created to investigate optional string encoding issues
 //
 
-import Foundation
-import Testing
-import HTML_Form_Coder
-import HTML_Form_Coder_Codable
-
-@Suite("Optional String Encoding Tests")
+@Suite
 struct OptionalStringEncodingTests {
 
     struct RequestWithOptionals: Codable {

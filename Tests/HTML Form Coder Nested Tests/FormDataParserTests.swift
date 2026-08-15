@@ -1,15 +1,15 @@
+import HTML_Form_Coder
 import HTML_Standard
+import Testing
+
+@testable import HTML_Form_Coder_Nested
+
 //
 //  FormDataParserTests.swift
 //  swift-rfc-2388
 //
 //  RFC 2388: Returning Values from Forms: multipart/form-data
 //
-
-import HTML_Form_Coder
-import Testing
-
-@testable import HTML_Form_Coder_Nested
 
 @Suite
 struct `HTML.Form.Coder.Nested.Data Parser Tests` {
@@ -29,7 +29,10 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
 
     @Test
     func `Parse arrays with brackets strategy`() {
-        let result = HTML.Form.Coder.Nested.Data.parse("tags[]=swift&tags[]=vapor", strategy: .brackets)
+        let result = HTML.Form.Coder.Nested.Data.parse(
+            "tags[]=swift&tags[]=vapor",
+            strategy: .brackets
+        )
 
         guard case .dictionary(let dict) = result,
             case .array(let tags) = dict["tags"]
@@ -64,7 +67,10 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
 
     @Test
     func `Parse with accumulate values strategy`() {
-        let result = HTML.Form.Coder.Nested.Data.parse("color=red&color=blue", strategy: .accumulateValues)
+        let result = HTML.Form.Coder.Nested.Data.parse(
+            "color=red&color=blue",
+            strategy: .accumulateValues
+        )
 
         guard case .dictionary(let dict) = result,
             case .array(let colors) = dict["color"]
@@ -80,7 +86,9 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
 
     @Test
     func `Parse nested objects`() {
-        let result = HTML.Form.Coder.Nested.Data.parse("user[name]=John&user[email]=john@example.com")
+        let result = HTML.Form.Coder.Nested.Data.parse(
+            "user[name]=John&user[email]=john@example.com"
+        )
 
         guard case .dictionary(let dict) = result,
             case .dictionary(let user) = dict["user"]
@@ -132,7 +140,9 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
         #expect(pairs[0].0 == "name")
         #expect(pairs[0].1 == "Test")
 
-        #expect(HTML.Form.Coder.Nested.Data.parse("name=Test&") == .dictionary(["name": .value("Test")]))
+        #expect(
+            HTML.Form.Coder.Nested.Data.parse("name=Test&") == .dictionary(["name": .value("Test")])
+        )
     }
 
     @Test
@@ -142,7 +152,9 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
         #expect(pairs[0].0 == "name")
         #expect(pairs[0].1 == "Test")
 
-        #expect(HTML.Form.Coder.Nested.Data.parse("&name=Test") == .dictionary(["name": .value("Test")]))
+        #expect(
+            HTML.Form.Coder.Nested.Data.parse("&name=Test") == .dictionary(["name": .value("Test")])
+        )
     }
 
     @Test
@@ -154,7 +166,10 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
         #expect(pairs[1].0 == "b")
         #expect(pairs[1].1 == "2")
 
-        #expect(HTML.Form.Coder.Nested.Data.parse("a=1&&b=2") == .dictionary(["a": .value("1"), "b": .value("2")]))
+        #expect(
+            HTML.Form.Coder.Nested.Data.parse("a=1&&b=2")
+                == .dictionary(["a": .value("1"), "b": .value("2")])
+        )
     }
 
     @Test

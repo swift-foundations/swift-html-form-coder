@@ -1,15 +1,15 @@
+import Foundation
+import HTML_Form_Coder
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  DebuggingNSErrorTest.swift
 //  URLFormCoding Tests
 //
 //  Debugging the NSError issue
 //
-
-import Foundation
-import Testing
-import HTML_Form_Coder
-import HTML_Form_Coder_Codable
 
 @Suite("Debugging NSError Issue")
 struct DebuggingNSErrorTests {
@@ -74,7 +74,7 @@ struct DebuggingNSErrorTests {
     }
 
     // Test encoding error objects
-    enum TestError: Error, Codable {
+    enum TestError: Swift.Error, Codable {
         case someError
     }
 

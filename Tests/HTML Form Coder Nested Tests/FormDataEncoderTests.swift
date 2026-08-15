@@ -1,15 +1,15 @@
+import HTML_Form_Coder
 import HTML_Standard
+import Testing
+
+@testable import HTML_Form_Coder_Nested
+
 //
 //  FormDataEncoderTests.swift
 //  swift-rfc-2388
 //
 //  RFC 2388: Returning Values from Forms: multipart/form-data
 //
-
-import HTML_Form_Coder
-import Testing
-
-@testable import HTML_Form_Coder_Nested
 
 @Suite
 struct `HTML.Form.Coder.Nested.Data Encoder Tests` {

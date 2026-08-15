@@ -1,8 +1,8 @@
-import HTML_Standard
 import Byte_Primitive
 import HTML_Form_Coder
-import WHATWG_HTML_FormData
+import HTML_Standard
 import Testing
+import WHATWG_HTML_FormData
 
 extension HTML.Form.Coder {
     @Suite

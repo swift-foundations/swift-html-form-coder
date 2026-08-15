@@ -1,15 +1,15 @@
+import Foundation
+import HTML_Form_Coder
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  URLFormCoding Tests.swift
 //  swift-url-form-coding
 //
 //  Created by Coen ten Thije Boonkkamp on 05/08/2025.
 //
-
-import Foundation
-import Testing
-import HTML_Form_Coder
-import HTML_Form_Coder_Codable
 
 @Suite("URLFormCoding Round-Trip Tests")
 struct URLFormCodingRoundTripTests {

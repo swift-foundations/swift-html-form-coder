@@ -1,11 +1,11 @@
 public import Byte_Primitive
-public import HTML_Standard
-public import WHATWG_HTML_FormData
 public import HTML_Form_Coder
+public import HTML_Standard
 public import RFC_2045
 public import RFC_2046
 public import RFC_2183
 public import RFC_7578
+public import WHATWG_HTML_FormData
 
 extension HTML.Form.Data.Entry.List {
     public init(
@@ -74,12 +74,23 @@ extension HTML.Form.Data.Entry.List {
                     throw .filename(error)
                 }
 
+                let contentType: RFC_2045.ContentType?
+                if value.type.isEmpty {
+                    contentType = nil
+                } else {
+                    do throws(RFC_2045.ContentType.Error) {
+                        contentType = try RFC_2045.ContentType(value.type)
+                    } catch {
+                        contentType = nil
+                    }
+                }
+
                 let file: RFC_7578.Form.Data.File
                 do throws(RFC_7578.Form.Data.Error) {
                     file = try RFC_7578.Form.Data.File(
                         fieldName: entry.name,
                         filename: filename,
-                        contentType: value.type.isEmpty ? nil : try? RFC_2045.ContentType(value.type),
+                        contentType: contentType,
                         content: value.body
                     )
                 } catch {

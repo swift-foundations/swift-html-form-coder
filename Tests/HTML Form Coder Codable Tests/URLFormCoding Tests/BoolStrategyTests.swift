@@ -1,4 +1,9 @@
+import Foundation
+import HTML_Form_Coder
+import HTML_Form_Coder_Codable
 import HTML_Standard
+import Testing
+
 //
 //  BoolStrategyTests.swift
 //  URLFormCoding Tests
@@ -8,12 +13,7 @@ import HTML_Standard
 //  offers the same .true/.yes presets for multipart form encoding.
 //
 
-import Foundation
-import Testing
-import HTML_Form_Coder
-import HTML_Form_Coder_Codable
-
-@Suite("Bool Strategy Tests")
+@Suite
 struct BoolStrategyTests {
 
     // MARK: - Test Models
@@ -95,43 +95,88 @@ struct BoolStrategyTests {
         func testDefaultStrategyDecoding() throws {
             let decoder = HTML.Form.Coder.Decoder()
 
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8)).enabled == true)
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=1".utf8)).enabled == true)
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=false".utf8)).enabled == false)
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=0".utf8)).enabled == false)
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=1".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=false".utf8))
+                    .enabled == false
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=0".utf8))
+                    .enabled == false
+            )
 
             // Unchanged default behavior: "yes" is NOT recognized as true unless opted in.
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8)).enabled == false)
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8))
+                    .enabled == false
+            )
         }
 
         @Test("Explicit .true strategy matches default behavior")
         func testExplicitTrueFalseStrategyDecoding() throws {
             let decoder = HTML.Form.Coder.Decoder(boolDecodingStrategy: .true)
 
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8)).enabled == true)
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8)).enabled == false)
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8))
+                    .enabled == false
+            )
         }
 
         @Test(".yes strategy additionally accepts yes as true")
         func testYesNoStrategyDecoding() throws {
             let decoder = HTML.Form.Coder.Decoder(boolDecodingStrategy: .yes)
 
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8)).enabled == true)
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=YES".utf8)).enabled == true)
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=YES".utf8))
+                    .enabled == true
+            )
             // Existing true-forms still accepted.
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8)).enabled == true)
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=1".utf8)).enabled == true)
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=1".utf8))
+                    .enabled == true
+            )
             // "no" and anything unrecognized still decode to false.
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=no".utf8)).enabled == false)
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=false".utf8)).enabled == false)
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=no".utf8))
+                    .enabled == false
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=false".utf8))
+                    .enabled == false
+            )
         }
 
         @Test("Custom bool decoding strategy")
         func testCustomStrategyDecoding() throws {
             let decoder = HTML.Form.Coder.Decoder(boolDecodingStrategy: .custom { $0 == "on" })
 
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=on".utf8)).enabled == true)
-            #expect(try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8)).enabled == false)
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=on".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8))
+                    .enabled == false
+            )
         }
     }
 
