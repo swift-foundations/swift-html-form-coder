@@ -12,7 +12,7 @@ import Testing
 // representative fixture value with FIXED timestamps and fixed data bytes,
 // snapshots the encoded pair string, decodes it back, and snapshots the
 // round-trip equality result. Round-trip failures on the current stack are
-// captured as-is in `__Corpus__/KNOWN-NON-ROUNDTRIP.txt`, not fixed.
+// captured as-is in the canonical Swift corpus, not fixed.
 
 // MARK: - Fixtures (fixed values only)
 
@@ -303,12 +303,12 @@ private func makeCases() -> [Case] {
 
 @Suite("Form Coder Parity")
 struct FormCoderParityTests {
-    @Test("wire-shape corpus (compare-or-record)")
-    func corpus() throws {
+    @Test("wire-shape corpus")
+    func corpus() {
         var nonRoundtrip: [String] = []
         for testCase in makeCases() {
             let (encoded, roundtrip) = testCase.run()
-            try Corpus.compareOrRecord(
+            Corpus.compare(
                 "encoded: \(encoded)\n\(roundtrip)\n",
                 named: testCase.name
             )
@@ -320,6 +320,6 @@ struct FormCoderParityTests {
             nonRoundtrip.isEmpty
             ? "none\n"
             : nonRoundtrip.joined(separator: "\n") + "\n"
-        try Corpus.compareOrRecord(known, named: "KNOWN-NON-ROUNDTRIP")
+        Corpus.compare(known, named: "KNOWN-NON-ROUNDTRIP")
     }
 }

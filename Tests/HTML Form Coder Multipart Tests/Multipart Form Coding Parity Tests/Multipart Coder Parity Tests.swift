@@ -23,12 +23,13 @@ import WHATWG_HTML_Forms
 //
 // Note: the multipart Bool.Encoder strategies (.trueFalse/.yesNo/.numeric,
 // dossier B2-06) live in swift-url-routing's RFC_2046.Multipart.Encoder, not
-// in this package's surface; MultipartFormCoding exposes no Bool or array
-// strategy axis. See __Corpus__/NOTES.txt.
+// in this package's surface or dependency stack; MultipartFormCoding exposes
+// no Bool or array strategy axis. `HTML.Form.Data.Entry.List` represents
+// repetition as repeated entry names instead.
 
 @Suite("Multipart Coder Parity")
 struct MultipartCoderParityTests {
-    @Test("wire-shape corpus (compare-or-record)")
+    @Test("wire-shape corpus")
     func corpus() throws {
         // PINNED boundary: grammar-valid ASCII, well under the 70-char limit.
         let boundary = try RFC_2046.Boundary("----CoderParityBoundary0123456789")
@@ -52,11 +53,11 @@ struct MultipartCoderParityTests {
         var bodyBytes: [Byte] = []
         let contentType = try coder.encode(formData, into: &bodyBytes)
         let body = String(decoding: bodyBytes.map(\.underlying), as: UTF8.self)
-        try Corpus.compareOrRecord(body, named: "multipart-body")
+        Corpus.compare(body, named: "multipart-body")
 
         // Encode: the Content-Type value the encoder exposes.
         #expect(contentType.parameters["boundary"] == boundary.rawValue)
-        try Corpus.compareOrRecord(
+        Corpus.compare(
             contentType.description + "\n",
             named: "multipart-contentType"
         )
@@ -74,12 +75,12 @@ struct MultipartCoderParityTests {
         } catch {
             roundtrip = "roundtrip: parse-error: \(error)"
         }
-        try Corpus.compareOrRecord(roundtrip + "\n", named: "multipart-roundtrip")
+        Corpus.compare(roundtrip + "\n", named: "multipart-roundtrip")
 
         let known =
             roundtrip == "roundtrip: equal"
             ? "none\n"
             : "multipart-body: \(roundtrip)\n"
-        try Corpus.compareOrRecord(known, named: "KNOWN-NON-ROUNDTRIP")
+        Corpus.compare(known, named: "KNOWN-NON-ROUNDTRIP")
     }
 }

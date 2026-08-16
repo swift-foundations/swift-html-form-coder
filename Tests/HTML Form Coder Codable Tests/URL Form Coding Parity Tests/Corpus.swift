@@ -2,46 +2,38 @@ import Foundation
 import HTML_Standard
 import Testing
 
-// Batch-0 parity corpus: tiny local fixture helper (compare-or-record).
-//
-// Intentionally self-contained so this package does not gain a dependency on
-// swift-url-routing's URL Routing Test Support.
+// The checked-in Swift table is the canonical parity corpus. Keeping the
+// expected bytes in the test target preserves exact comparisons without a
+// second, non-Swift fixture tree beside the tests.
 
 enum Corpus {
-    static let directory = URL(fileURLWithPath: #filePath)
-        .deletingLastPathComponent()
-        .appendingPathComponent("__Corpus__")
-
-    /// Compare-or-record: writes the fixture if absent; otherwise byte-compares
-    /// and records an issue with a diff-style message on mismatch.
-    static func compareOrRecord(
+    /// Byte-compares one produced value with its canonical entry and records a
+    /// diff-style issue on mismatch.
+    static func compare(
         _ produced: String,
         named name: String,
         sourceLocation: SourceLocation = #_sourceLocation
-    ) throws {
-        let url = directory.appendingPathComponent(name + ".txt")
+    ) {
         let producedData = Foundation.Data(produced.utf8)
-        if FileManager.default.fileExists(atPath: url.path) {
-            let expectedData = try Foundation.Data(contentsOf: url)
-            if expectedData != producedData {
-                let expected = String(decoding: expectedData, as: UTF8.self)
-                Issue.record(
-                    """
-                    Corpus mismatch for \(name)
-                    --- expected ---
-                    \(expected)
-                    --- actual ---
-                    \(produced)
-                    """,
-                    sourceLocation: sourceLocation
-                )
-            }
-        } else {
-            try FileManager.default.createDirectory(
-                at: directory,
-                withIntermediateDirectories: true
+        guard let expectedData = expected[name] else {
+            Issue.record(
+                "Canonical corpus has no entry named \(name)",
+                sourceLocation: sourceLocation
             )
-            try producedData.write(to: url)
+            return
+        }
+        if expectedData != producedData {
+            let expected = String(decoding: expectedData, as: UTF8.self)
+            Issue.record(
+                """
+                Corpus mismatch for \(name)
+                --- expected ---
+                \(expected)
+                --- actual ---
+                \(produced)
+                """,
+                sourceLocation: sourceLocation
+            )
         }
     }
 }

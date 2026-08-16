@@ -22,9 +22,18 @@ let package = Package(
         .package(url: "https://github.com/swift-whatwg/swift-whatwg-html.git", branch: "main"),
         .package(url: "https://github.com/swift-whatwg/swift-whatwg-url.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-http-body.git", branch: "main"),
-        .package(url: "https://github.com/swift-standards/swift-media-type-standard.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-byte-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-parser-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-standards/swift-media-type-standard.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-byte-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-parser-primitives.git",
+            branch: "main"
+        ),
         .package(url: "https://github.com/swift-ieee/swift-ieee-754.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2045.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2046.git", branch: "main"),
@@ -110,10 +119,7 @@ let package = Package(
                 .product(name: "RFC 2183", package: "swift-rfc-2183"),
                 .product(name: "RFC 7578", package: "swift-rfc-7578"),
             ],
-            path: "Tests/HTML Form Coder Multipart Tests",
-            exclude: [
-                "Multipart Form Coding Parity Tests/__Corpus__",
-            ]
+            path: "Tests/HTML Form Coder Multipart Tests"
         ),
         .testTarget(
             name: "HTML Form Coder Nested Tests",
@@ -131,25 +137,23 @@ let package = Package(
                 "HTML Form Coder Codable",
                 .product(name: "HTML Standard", package: "swift-html-standard"),
             ],
-            path: "Tests/HTML Form Coder Codable Tests",
-            exclude: [
-                "URL Form Coding Parity Tests/__Corpus__",
-            ]
+            path: "Tests/HTML Form Coder Codable Tests"
         ),
     ],
     swiftLanguageModes: [.v6]
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .strictMemorySafety(),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        .enableUpcomingFeature("MemberImportVisibility"),
-        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("LifetimeDependence"),
-        .enableExperimentalFeature("Lifetimes"),
-        .enableExperimentalFeature("SuppressedAssociatedTypes"),
-        .enableUpcomingFeature("InferIsolatedConformances"),
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .strictMemorySafety(),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+            .enableExperimentalFeature("LifetimeDependence"),
+            .enableExperimentalFeature("Lifetimes"),
+            .enableExperimentalFeature("SuppressedAssociatedTypes"),
+            .enableUpcomingFeature("InferIsolatedConformances"),
+        ]
 }
