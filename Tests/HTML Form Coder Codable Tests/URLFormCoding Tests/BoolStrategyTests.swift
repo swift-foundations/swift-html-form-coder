@@ -1,0 +1,213 @@
+import Foundation
+import HTML_Form_Coder
+import HTML_Form_Coder_Codable
+import HTML_Standard
+import Testing
+
+//
+//  BoolStrategyTests.swift
+//  URLFormCoding Tests
+//
+//  Created for testing the Bool encoding/decoding strategies added for RT-030b.
+//  Mirrors RFC_2046.Multipart.Encoder's Bool.Encoder (swift-url-routing), which
+//  offers the same .true/.yes presets for multipart form encoding.
+//
+
+@Suite
+struct BoolStrategyTests {
+
+    // MARK: - Test Models
+
+    struct Flag: Codable, Equatable {
+        let name: String
+        let enabled: Bool
+    }
+
+    struct OptionalFlag: Codable, Equatable {
+        let name: String
+        let enabled: Bool?
+    }
+
+    // MARK: - Encoding
+
+    @Suite("Bool Encoding")
+    struct EncodingTests {
+
+        @Test("Encodes true/false with the default trueFalse strategy")
+        func testDefaultStrategyEncodesTrueFalse() throws {
+            let encoder = HTML.Form.Coder.Encoder()
+
+            let onData = try encoder.encode(Flag(name: "a", enabled: true))
+            let offData = try encoder.encode(Flag(name: "a", enabled: false))
+
+            // Keyed containers are dictionary-backed, so field order is not guaranteed;
+            // check field presence rather than exact string equality (matches this
+            // suite's existing convention, e.g. FormEncoder Tests.swift).
+            #expect(String(data: onData, encoding: .utf8)!.contains("enabled=true"))
+            #expect(String(data: offData, encoding: .utf8)!.contains("enabled=false"))
+        }
+
+        @Test("Encodes true/false explicitly with .true")
+        func testExplicitTrueFalseStrategy() throws {
+            let encoder = HTML.Form.Coder.Encoder(boolEncodingStrategy: .true)
+
+            let onData = try encoder.encode(Flag(name: "a", enabled: true))
+            let offData = try encoder.encode(Flag(name: "a", enabled: false))
+
+            #expect(String(data: onData, encoding: .utf8)!.contains("enabled=true"))
+            #expect(String(data: offData, encoding: .utf8)!.contains("enabled=false"))
+        }
+
+        @Test("Encodes true/false as yes/no with .yes")
+        func testYesNoStrategy() throws {
+            let encoder = HTML.Form.Coder.Encoder(boolEncodingStrategy: .yes)
+
+            let onData = try encoder.encode(Flag(name: "a", enabled: true))
+            let offData = try encoder.encode(Flag(name: "a", enabled: false))
+
+            #expect(String(data: onData, encoding: .utf8)!.contains("enabled=yes"))
+            #expect(String(data: offData, encoding: .utf8)!.contains("enabled=no"))
+        }
+
+        @Test("Applies .yes to optional Bool fields")
+        func testYesNoStrategyWithOptional() throws {
+            let encoder = HTML.Form.Coder.Encoder(boolEncodingStrategy: .yes)
+
+            let data = try encoder.encode(OptionalFlag(name: "a", enabled: true))
+            #expect(String(data: data, encoding: .utf8)!.contains("enabled=yes"))
+        }
+
+        @Test("Custom bool encoding strategy")
+        func testCustomStrategy() throws {
+            let encoder = HTML.Form.Coder.Encoder(boolEncodingStrategy: .custom { $0 ? "1" : "0" })
+
+            let data = try encoder.encode(Flag(name: "a", enabled: true))
+            #expect(String(data: data, encoding: .utf8)!.contains("enabled=1"))
+        }
+    }
+
+    // MARK: - Decoding
+
+    @Suite("Bool Decoding")
+    struct DecodingTests {
+
+        @Test("Default trueFalse strategy decodes 1/true as true, everything else as false")
+        func testDefaultStrategyDecoding() throws {
+            let decoder = HTML.Form.Coder.Decoder()
+
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=1".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=false".utf8))
+                    .enabled == false
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=0".utf8))
+                    .enabled == false
+            )
+
+            // Unchanged default behavior: "yes" is NOT recognized as true unless opted in.
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8))
+                    .enabled == false
+            )
+        }
+
+        @Test("Explicit .true strategy matches default behavior")
+        func testExplicitTrueFalseStrategyDecoding() throws {
+            let decoder = HTML.Form.Coder.Decoder(boolDecodingStrategy: .true)
+
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8))
+                    .enabled == false
+            )
+        }
+
+        @Test(".yes strategy additionally accepts yes as true")
+        func testYesNoStrategyDecoding() throws {
+            let decoder = HTML.Form.Coder.Decoder(boolDecodingStrategy: .yes)
+
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=yes".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=YES".utf8))
+                    .enabled == true
+            )
+            // Existing true-forms still accepted.
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=1".utf8))
+                    .enabled == true
+            )
+            // "no" and anything unrecognized still decode to false.
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=no".utf8))
+                    .enabled == false
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=false".utf8))
+                    .enabled == false
+            )
+        }
+
+        @Test("Custom bool decoding strategy")
+        func testCustomStrategyDecoding() throws {
+            let decoder = HTML.Form.Coder.Decoder(boolDecodingStrategy: .custom { $0 == "on" })
+
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=on".utf8))
+                    .enabled == true
+            )
+            #expect(
+                try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=true".utf8))
+                    .enabled == false
+            )
+        }
+    }
+
+    // MARK: - Round-trip
+
+    @Suite("Bool Round-trip")
+    struct RoundTripTests {
+
+        @Test("Round-trips true/false with matching default strategies")
+        func testDefaultRoundTrip() throws {
+            let encoder = HTML.Form.Coder.Encoder()
+            let decoder = HTML.Form.Coder.Decoder()
+
+            let original = Flag(name: "a", enabled: true)
+            let encoded = try encoder.encode(original)
+            let decoded = try decoder.decode(Flag.self, from: encoded)
+
+            #expect(decoded == original)
+        }
+
+        @Test("Round-trips yes/no with matching .yes strategies")
+        func testYesNoRoundTrip() throws {
+            let encoder = HTML.Form.Coder.Encoder(boolEncodingStrategy: .yes)
+            let decoder = HTML.Form.Coder.Decoder(boolDecodingStrategy: .yes)
+
+            for value in [true, false] {
+                let original = Flag(name: "a", enabled: value)
+                let encoded = try encoder.encode(original)
+                let decoded = try decoder.decode(Flag.self, from: encoded)
+                #expect(decoded == original)
+            }
+        }
+    }
+}

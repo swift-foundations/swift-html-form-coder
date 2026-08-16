@@ -22,9 +22,18 @@ let package = Package(
         .package(url: "https://github.com/swift-whatwg/swift-whatwg-html.git", branch: "main"),
         .package(url: "https://github.com/swift-whatwg/swift-whatwg-url.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-http-body.git", branch: "main"),
-        .package(url: "https://github.com/swift-standards/swift-media-type-standard.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-byte-primitives.git", branch: "main"),
-        .package(url: "https://github.com/swift-primitives/swift-parser-primitives.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-standards/swift-media-type-standard.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-byte-primitives.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-primitives/swift-parser-primitives.git",
+            branch: "main"
+        ),
         .package(url: "https://github.com/swift-ieee/swift-ieee-754.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2045.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-2046.git", branch: "main"),
@@ -85,20 +94,66 @@ let package = Package(
                 .product(name: "RFC 7578", package: "swift-rfc-7578"),
             ]
         ),
+        .testTarget(
+            name: "HTML Form Coder Tests",
+            dependencies: [
+                "HTML Form Coder",
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+                .product(name: "WHATWG HTML FormData", package: "swift-whatwg-html"),
+                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+            ],
+            path: "Tests/HTML Form Coder Tests"
+        ),
+        .testTarget(
+            name: "HTML Form Coder Multipart Tests",
+            dependencies: [
+                "HTML Form Coder",
+                "HTML Form Coder Multipart",
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+                .product(name: "WHATWG HTML Forms", package: "swift-whatwg-html"),
+                .product(name: "WHATWG HTML FormData", package: "swift-whatwg-html"),
+                .product(name: "HTTP Body", package: "swift-http-body"),
+                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+                .product(name: "RFC 2045", package: "swift-rfc-2045"),
+                .product(name: "RFC 2046", package: "swift-rfc-2046"),
+                .product(name: "RFC 2183", package: "swift-rfc-2183"),
+                .product(name: "RFC 7578", package: "swift-rfc-7578"),
+            ],
+            path: "Tests/HTML Form Coder Multipart Tests"
+        ),
+        .testTarget(
+            name: "HTML Form Coder Nested Tests",
+            dependencies: [
+                "HTML Form Coder",
+                "HTML Form Coder Nested",
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+            ],
+            path: "Tests/HTML Form Coder Nested Tests"
+        ),
+        .testTarget(
+            name: "HTML Form Coder Codable Tests",
+            dependencies: [
+                "HTML Form Coder",
+                "HTML Form Coder Codable",
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+            ],
+            path: "Tests/HTML Form Coder Codable Tests"
+        ),
     ],
     swiftLanguageModes: [.v6]
 )
 
 for target in package.targets where ![.system, .binary, .plugin, .macro].contains(target.type) {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .strictMemorySafety(),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        .enableUpcomingFeature("MemberImportVisibility"),
-        .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
-        .enableExperimentalFeature("LifetimeDependence"),
-        .enableExperimentalFeature("Lifetimes"),
-        .enableExperimentalFeature("SuppressedAssociatedTypes"),
-        .enableUpcomingFeature("InferIsolatedConformances"),
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .strictMemorySafety(),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+            .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+            .enableExperimentalFeature("LifetimeDependence"),
+            .enableExperimentalFeature("Lifetimes"),
+            .enableExperimentalFeature("SuppressedAssociatedTypes"),
+            .enableUpcomingFeature("InferIsolatedConformances"),
+        ]
 }
