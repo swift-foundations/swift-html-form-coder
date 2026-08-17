@@ -21,11 +21,11 @@ extension HTML.Form.Coder.Decoder {
         }
         private(set) var currentIndex: Int = 0
 
-        // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
-        // swiftlint:disable:next no_any_protocol_existential
         init(
             decoder: HTML.Form.Coder.Decoder,
             container: [Container],
+            // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
+            // swiftlint:disable:next no_any_protocol_existential
             codingPath: [any CodingKey]
         ) {
             self.decoder = decoder
