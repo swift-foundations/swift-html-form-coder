@@ -4,9 +4,9 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder.Encoder {
+extension HTML.Form.Coder.Encoder {
     struct UnkeyedContainer: UnkeyedEncodingContainer {
-        private let encoder: HTML.Element.Form.Coder.Encoder
+        private let encoder: HTML.Form.Coder.Encoder
 
         // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
         // swiftlint:disable:next no_any_protocol_existential
@@ -18,7 +18,7 @@ extension HTML.Element.Form.Coder.Encoder {
             return self.encoder.container?.values?.count ?? 0
         }
 
-        init(encoder: HTML.Element.Form.Coder.Encoder) {
+        init(encoder: HTML.Form.Coder.Encoder) {
             self.encoder = encoder
         }
 
@@ -28,7 +28,7 @@ extension HTML.Element.Form.Coder.Encoder {
             self.encoder.container = .unkeyed(values)
         }
 
-        mutating func encode<T>(_ value: T) throws(HTML.Element.Form.Coder.Encoder.Error)
+        mutating func encode<T>(_ value: T) throws(HTML.Form.Coder.Encoder.Error)
         where T: Encodable {
             var values = self.encoder.container?.values ?? []
             values.append(try self.encoder.box(value))

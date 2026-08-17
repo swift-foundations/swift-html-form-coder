@@ -4,24 +4,24 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder {
+extension HTML.Form.Coder {
     public final class Encoder: Swift.Encoder {
         package var container: Container?
         // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
         // swiftlint:disable:next no_any_protocol_existential
         public package(set) var codingPath: [any CodingKey] = []
-        public var dataEncodingStrategy: HTML.Element.Form.Coder.Strategy.Data.Encoding
-        public var dateEncodingStrategy: HTML.Element.Form.Coder.Strategy.Date.Encoding
-        public var arrayEncodingStrategy: HTML.Element.Form.Coder.Strategy.Array.Encoding
-        public var boolEncodingStrategy: HTML.Element.Form.Coder.Strategy.Bool.Encoding
+        public var dataEncodingStrategy: HTML.Form.Coder.Strategy.Data.Encoding
+        public var dateEncodingStrategy: HTML.Form.Coder.Strategy.Date.Encoding
+        public var arrayEncodingStrategy: HTML.Form.Coder.Strategy.Array.Encoding
+        public var boolEncodingStrategy: HTML.Form.Coder.Strategy.Bool.Encoding
         public let userInfo: [CodingUserInfoKey: Any] = [:]
 
         public init(
-            dataEncodingStrategy: HTML.Element.Form.Coder.Strategy.Data.Encoding = .deferred,
-            dateEncodingStrategy: HTML.Element.Form.Coder.Strategy.Date.Encoding = .deferred,
-            arrayEncodingStrategy: HTML.Element.Form.Coder.Strategy.Array.Encoding =
+            dataEncodingStrategy: HTML.Form.Coder.Strategy.Data.Encoding = .deferred,
+            dateEncodingStrategy: HTML.Form.Coder.Strategy.Date.Encoding = .deferred,
+            arrayEncodingStrategy: HTML.Form.Coder.Strategy.Array.Encoding =
                 .accumulateValues,
-            boolEncodingStrategy: HTML.Element.Form.Coder.Strategy.Bool.Encoding = .true
+            boolEncodingStrategy: HTML.Form.Coder.Strategy.Bool.Encoding = .true
         ) {
             self.dataEncodingStrategy = dataEncodingStrategy
             self.dateEncodingStrategy = dateEncodingStrategy
@@ -53,7 +53,7 @@ extension HTML.Element.Form.Coder {
                 return .singleValue(String(describing: decimal))
             }
 
-            let encoder = HTML.Element.Form.Coder.Encoder(
+            let encoder = HTML.Form.Coder.Encoder(
                 dataEncodingStrategy: self.dataEncodingStrategy,
                 dateEncodingStrategy: self.dateEncodingStrategy,
                 arrayEncodingStrategy: self.arrayEncodingStrategy,
@@ -75,7 +75,7 @@ extension HTML.Element.Form.Coder {
             let result = self.dateEncodingStrategy.encode(date)
 
             if result == "__DEFERRED_TO_DATE__" {
-                let encoder = HTML.Element.Form.Coder.Encoder(
+                let encoder = HTML.Form.Coder.Encoder(
                     dataEncodingStrategy: self.dataEncodingStrategy,
                     dateEncodingStrategy: self.dateEncodingStrategy,
                     arrayEncodingStrategy: self.arrayEncodingStrategy,
@@ -100,7 +100,7 @@ extension HTML.Element.Form.Coder {
             let result = self.dataEncodingStrategy.encode(data)
 
             if result == "__DEFERRED_TO_DATA__" {
-                let encoder = HTML.Element.Form.Coder.Encoder()
+                let encoder = HTML.Form.Coder.Encoder()
                 do {
                     try data.encode(to: encoder)
                 } catch {

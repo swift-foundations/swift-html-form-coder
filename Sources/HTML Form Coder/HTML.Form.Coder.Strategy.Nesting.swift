@@ -1,6 +1,6 @@
 public import HTML_Standard
 
-extension HTML.Element.Form.Coder.Strategy {
+extension HTML.Form.Coder.Strategy {
     /// Bracket/repetition conventions layered above the HTML entry list.
     ///
     /// These conventions are not part of RFC 2388 or the WHATWG wire

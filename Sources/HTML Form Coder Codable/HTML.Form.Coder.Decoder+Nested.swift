@@ -4,9 +4,9 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder.Decoder {
+extension HTML.Form.Coder.Decoder {
     @Sendable
-    static func convert(_ data: HTML.Element.Form.Coder.Nested.Data) -> Container {
+    static func convert(_ data: HTML.Form.Coder.Nested.Data) -> Container {
         switch data {
         case .value(let value):
             .singleValue(value)
@@ -21,7 +21,7 @@ extension HTML.Element.Form.Coder.Decoder {
 
     @Sendable
     static func parse(
-        nesting: HTML.Element.Form.Coder.Strategy.Nesting,
+        nesting: HTML.Form.Coder.Strategy.Nesting,
         sort: Bool = false
     ) -> @Sendable (String) -> Container {
         { query in
@@ -33,7 +33,7 @@ extension HTML.Element.Form.Coder.Decoder {
                 return .keyed([:])
             }
             return Self.convert(
-                HTML.Element.Form.Coder.Nested.Data.parse(sanitized, strategy: nesting, sort: sort)
+                HTML.Form.Coder.Nested.Data.parse(sanitized, strategy: nesting, sort: sort)
             )
         }
     }

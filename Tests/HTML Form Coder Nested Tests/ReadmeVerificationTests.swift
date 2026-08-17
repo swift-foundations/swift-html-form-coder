@@ -15,7 +15,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 31-35: Parse simple key-value pairs`() throws {
-        let data = HTML.Element.Form.Coder.Nested.Data.parse("name=John&age=30")
+        let data = HTML.Form.Coder.Nested.Data.parse("name=John&age=30")
 
         #expect(data.dictionaryValue?["name"]?.stringValue == "John")
         #expect(data.dictionaryValue?["age"]?.stringValue == "30")
@@ -23,7 +23,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 37-39: Parse arrays with bracket notation`() throws {
-        let tags = HTML.Element.Form.Coder.Nested.Data.parse(
+        let tags = HTML.Form.Coder.Nested.Data.parse(
             "tags[]=swift&tags[]=vapor",
             strategy: .brackets
         )
@@ -36,7 +36,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 41-48: Parse nested objects`() throws {
-        let user = HTML.Element.Form.Coder.Nested.Data.parse(
+        let user = HTML.Form.Coder.Nested.Data.parse(
             "user[name]=John&user[email]=john@example.com"
         )
 
@@ -47,7 +47,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 52-62: Encode with brackets strategy`() throws {
-        let data = HTML.Element.Form.Coder.Nested.Data.dictionary([
+        let data = HTML.Form.Coder.Nested.Data.dictionary([
             "name": .value("John"),
             "tags": .array([.value("swift"), .value("vapor")]),
         ])
@@ -60,7 +60,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 64-66: Encode with indexed brackets`() throws {
-        let data = HTML.Element.Form.Coder.Nested.Data.dictionary([
+        let data = HTML.Form.Coder.Nested.Data.dictionary([
             "name": .value("John"),
             "tags": .array([.value("swift"), .value("vapor")]),
         ])
@@ -73,7 +73,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 68-70: Encode with accumulate values`() throws {
-        let data = HTML.Element.Form.Coder.Nested.Data.dictionary([
+        let data = HTML.Form.Coder.Nested.Data.dictionary([
             "name": .value("John"),
             "tags": .array([.value("swift"), .value("vapor")]),
         ])
@@ -86,7 +86,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 76-78: Brackets strategy parsing`() throws {
-        let result = HTML.Element.Form.Coder.Nested.Data.parse(
+        let result = HTML.Form.Coder.Nested.Data.parse(
             "tags[]=value1&tags[]=value2",
             strategy: .brackets
         )
@@ -99,7 +99,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 81-83: Brackets with indices parsing`() throws {
-        let result = HTML.Element.Form.Coder.Nested.Data.parse(
+        let result = HTML.Form.Coder.Nested.Data.parse(
             "items[0]=first&items[1]=second",
             strategy: .bracketsWithIndices
         )
@@ -112,7 +112,7 @@ struct `README Verification` {
 
     @Test
     func `README Line 86-88: Accumulate values parsing`() throws {
-        let result = HTML.Element.Form.Coder.Nested.Data.parse(
+        let result = HTML.Form.Coder.Nested.Data.parse(
             "color=red&color=blue",
             strategy: .accumulateValues
         )

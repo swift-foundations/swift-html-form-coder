@@ -4,10 +4,10 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder.Decoder {
+extension HTML.Form.Coder.Decoder {
     struct UnkeyedContainer: UnkeyedDecodingContainer {
 
-        let decoder: HTML.Element.Form.Coder.Decoder
+        let decoder: HTML.Form.Coder.Decoder
         let container: [Container]
 
         // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
@@ -24,7 +24,7 @@ extension HTML.Element.Form.Coder.Decoder {
         // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
         // swiftlint:disable:next no_any_protocol_existential
         init(
-            decoder: HTML.Element.Form.Coder.Decoder,
+            decoder: HTML.Form.Coder.Decoder,
             container: [Container],
             codingPath: [any CodingKey]
         ) {
@@ -194,7 +194,7 @@ extension HTML.Element.Form.Coder.Decoder {
             defer { self.codingPath.removeLast() }
             let container = self.container[self.currentIndex]
             self.currentIndex += 1
-            let decoder = HTML.Element.Form.Coder.Decoder()
+            let decoder = HTML.Form.Coder.Decoder()
             decoder.containers = [container]
             decoder.codingPath = self.codingPath
             decoder.dataDecodingStrategy = self.decoder.dataDecodingStrategy

@@ -4,16 +4,16 @@ import HTML_Standard
 import Testing
 import WHATWG_HTML_FormData
 
-extension HTML.Element.Form.Coder {
+extension HTML.Form.Coder {
     @Suite
     struct Test {}
 }
 
-extension HTML.Element.Form.Coder.Test {
+extension HTML.Form.Coder.Test {
     @Test
     func `default enctype preserves ordered duplicate entries`() {
-        let coder = HTML.Element.Form.Coder()
-        let expected = HTML.Element.Form.Data.Entry.List(entries: [
+        let coder = HTML.Form.Coder()
+        let expected = HTML.Form.Data.Entry.List(entries: [
             .init(name: "name", stringValue: "Blob McBlob"),
             .init(name: "tag", stringValue: "swift"),
             .init(name: "tag", stringValue: "server side"),

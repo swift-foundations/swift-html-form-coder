@@ -2,7 +2,7 @@ public import Foundation
 public import HTML_Form_Coder
 public import HTML_Standard
 
-extension HTML.Element.Form.Coder.Strategy.Date {
+extension HTML.Form.Coder.Strategy.Date {
     public struct Decoding: @unchecked Sendable {
         package let decode: @Sendable (String) -> Foundation.Date?
 
@@ -18,8 +18,8 @@ extension HTML.Element.Form.Coder.Strategy.Date {
             Double($0).map { Foundation.Date(timeIntervalSince1970: $0 / 1_000) }
         }
         public static let iso8601 = Self {
-            HTML.Element.Form.Coder.Strategy.Date.Format.milliseconds.date(from: $0)
-                ?? HTML.Element.Form.Coder.Strategy.Date.Format.seconds.date(from: $0)
+            HTML.Form.Coder.Strategy.Date.Format.milliseconds.date(from: $0)
+                ?? HTML.Form.Coder.Strategy.Date.Format.seconds.date(from: $0)
         }
 
         public static func formatted(_ formatter: DateFormatter) -> Self {

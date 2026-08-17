@@ -1,5 +1,5 @@
 public import HTML_Standard
 
-extension HTML.Element.Form.Coder.Strategy {
+extension HTML.Form.Coder.Strategy {
     public enum Array {}
 }

@@ -1,7 +1,7 @@
 public import HTML_Standard
 public import WHATWG_HTML_FormData
 
-extension HTML.Element.Form {
+extension HTML.Form {
     /// The default HTML form body coder.
     ///
     /// Its wire representation is the HTML specification's default enctype,

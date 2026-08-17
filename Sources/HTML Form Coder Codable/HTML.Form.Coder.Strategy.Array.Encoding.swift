@@ -1,13 +1,13 @@
 public import HTML_Form_Coder
 public import HTML_Standard
 
-extension HTML.Element.Form.Coder.Strategy.Array {
+extension HTML.Form.Coder.Strategy.Array {
     public enum Encoding: Sendable, Equatable {
         case accumulateValues
         case brackets
         case bracketsWithIndices
 
-        package var nesting: HTML.Element.Form.Coder.Strategy.Nesting {
+        package var nesting: HTML.Form.Coder.Strategy.Nesting {
             switch self {
             case .accumulateValues: .accumulateValues
             case .brackets: .brackets

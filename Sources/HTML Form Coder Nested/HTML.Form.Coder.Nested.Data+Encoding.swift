@@ -2,10 +2,10 @@ public import HTML_Form_Coder
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder.Nested.Data {
+extension HTML.Form.Coder.Nested.Data {
     /// Encodes nested form data into a URL-encoded query string.
     ///
-    /// This function serializes HTML.Element.Form.Coder.Nested.Data structures back into URL-encoded
+    /// This function serializes HTML.Form.Coder.Nested.Data structures back into URL-encoded
     /// form data strings according to RFC 2388 conventions.
     ///
     /// - Parameters:
@@ -16,7 +16,7 @@ extension HTML.Element.Form.Coder.Nested.Data {
     /// ## Example
     ///
     /// ```swift
-    /// let data = HTML.Element.Form.Coder.Nested.Data.dictionary([
+    /// let data = HTML.Form.Coder.Nested.Data.dictionary([
     ///     "name": .value("John"),
     ///     "tags": .array([.value("swift"), .value("vapor")])
     /// ])
@@ -30,7 +30,7 @@ extension HTML.Element.Form.Coder.Nested.Data {
     /// // Result: "name=John&tags=swift&tags=vapor"
     /// ```
     public func encode(
-        strategy: HTML.Element.Form.Coder.Strategy.Nesting = .brackets,
+        strategy: HTML.Form.Coder.Strategy.Nesting = .brackets,
         percentEncode: Bool = true
     ) -> String {
         let raw = encodeWithStrategy(prefix: "", strategy: strategy)
@@ -42,7 +42,7 @@ extension HTML.Element.Form.Coder.Nested.Data {
         }
     }
 
-    /// Recursively encodes HTML.Element.Form.Coder.Nested.Data with a given prefix and strategy.
+    /// Recursively encodes HTML.Form.Coder.Nested.Data with a given prefix and strategy.
     ///
     /// - Parameters:
     ///   - prefix: The current path prefix (e.g., "user[address]")
@@ -50,7 +50,7 @@ extension HTML.Element.Form.Coder.Nested.Data {
     /// - Returns: URL-encoded string segment
     private func encodeWithStrategy(
         prefix: String,
-        strategy: HTML.Element.Form.Coder.Strategy.Nesting
+        strategy: HTML.Form.Coder.Strategy.Nesting
     ) -> String {
         switch self {
         case .value(let str):

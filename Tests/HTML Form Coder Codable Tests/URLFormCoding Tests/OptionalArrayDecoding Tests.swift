@@ -40,8 +40,8 @@ struct OptionalArrayDecodingTests {
 
     // MARK: - Test Helpers
 
-    let encoder = HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
-    let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+    let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+    let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
 
     // MARK: - Tests
 

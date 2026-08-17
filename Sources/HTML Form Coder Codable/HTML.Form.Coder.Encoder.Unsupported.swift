@@ -4,7 +4,7 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder.Encoder {
+extension HTML.Form.Coder.Encoder {
     /// A stub encoder that throws errors on any operation.
     /// Used for unsupported superEncoder operations that cannot throw per protocol requirements.
     struct Unsupported: Swift.Encoder {

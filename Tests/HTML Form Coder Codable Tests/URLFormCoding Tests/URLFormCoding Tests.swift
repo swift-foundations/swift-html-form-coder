@@ -13,7 +13,7 @@ struct BracketsStrategyTests {
     @Test("Arrays with brackets (no indices) strategy")
     func testBracketsWithoutIndices() throws {
         // Test the brackets strategy that uses empty brackets
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
 
         // Test data like: tags[]=swift&tags[]=ios&tags[]=server
         let queryString = "name=Test&tags[]=swift&tags[]=ios&tags[]=server"
@@ -32,7 +32,7 @@ struct BracketsStrategyTests {
 
     @Test("Nested structures with empty brackets")
     func testNestedBracketsWithoutIndices() throws {
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
 
         // Test nested data: user[pets][][name]=Fido&user[pets][][name]=Rex
         let queryString = "user[pets][][name]=Fido&user[pets][][name]=Rex"
@@ -58,7 +58,7 @@ struct BracketsStrategyTests {
 
     @Test("Mixed brackets and indices are handled gracefully")
     func testMixedBracketStyles() throws {
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
 
         // RFC 2388 implementation handles mixed styles gracefully
         let queryString = "tags[]=first&tags[1]=second"
@@ -82,9 +82,9 @@ struct CustomStrategyTests {
     @Test("Custom parsing strategy with special delimiter")
     func testCustomParsingStrategy() throws {
         // Create a custom strategy that uses pipe | as separator
-        let customStrategy: @Sendable (String) -> HTML.Element.Form.Coder.Decoder.Container = {
+        let customStrategy: @Sendable (String) -> HTML.Form.Coder.Decoder.Container = {
             query in
-            var params: [String: HTML.Element.Form.Coder.Decoder.Container] = [:]
+            var params: [String: HTML.Form.Coder.Decoder.Container] = [:]
             let pairs = query.split(separator: "|")
 
             for pair in pairs {
@@ -99,7 +99,7 @@ struct CustomStrategyTests {
             return .keyed(params)
         }
 
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .custom(customStrategy))
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .custom(customStrategy))
 
         // Use pipe and colon delimiters
         let queryString = "name:John|age:30|city:NYC"
@@ -121,9 +121,9 @@ struct CustomStrategyTests {
     @Test("Custom strategy with array support")
     func testCustomStrategyWithArrays() throws {
         // Custom strategy that handles comma-separated arrays
-        let customStrategy: @Sendable (String) -> HTML.Element.Form.Coder.Decoder.Container = {
+        let customStrategy: @Sendable (String) -> HTML.Form.Coder.Decoder.Container = {
             query in
-            var params: [String: HTML.Element.Form.Coder.Decoder.Container] = [:]
+            var params: [String: HTML.Form.Coder.Decoder.Container] = [:]
             let pairs = query.split(separator: "&")
 
             for pair in pairs {
@@ -136,7 +136,7 @@ struct CustomStrategyTests {
                     // Handle comma-separated arrays
                     if value.contains(",") {
                         let values = value.split(separator: ",").map {
-                            HTML.Element.Form.Coder.Decoder.Container.singleValue(String($0))
+                            HTML.Form.Coder.Decoder.Container.singleValue(String($0))
                         }
                         params[key] = .unkeyed(values)
                     } else {
@@ -148,7 +148,7 @@ struct CustomStrategyTests {
             return .keyed(params)
         }
 
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .custom(customStrategy))
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .custom(customStrategy))
 
         let queryString = "name=Test&tags=swift,ios,server"
         let data = queryString.data(using: .utf8)!
@@ -179,7 +179,7 @@ struct ThreadSafetyTests {
         let results = try await withThrowingTaskGroup(of: Foundation.Data.self) { group in
             for i in 0..<100 {
                 group.addTask {
-                    let encoder = HTML.Element.Form.Coder.Encoder()  // Create encoder per task
+                    let encoder = HTML.Form.Coder.Encoder()  // Create encoder per task
                     let model = Model(id: i, name: "Test\(i)")
                     return try encoder.encode(model)
                 }
@@ -212,7 +212,7 @@ struct ThreadSafetyTests {
             for data in testData {
                 group.addTask {
                     // Create decoder per task
-                    let decoder = HTML.Element.Form.Coder.Decoder(
+                    let decoder = HTML.Form.Coder.Decoder(
                         arrayParsingStrategy: .bracketsWithIndices
                     )
                     return try decoder.decode(Model.self, from: data)
@@ -234,8 +234,8 @@ struct ThreadSafetyTests {
     @Test("Encoder/Decoder state isolation")
     func testStateIsolation() throws {
         // Ensure encoders don't share state
-        let encoder1 = HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .accumulateValues)
-        let encoder2 = HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+        let encoder1 = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .accumulateValues)
+        let encoder2 = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
 
         struct Model: Codable {
             let tags: [String]
@@ -270,7 +270,7 @@ struct URLComponentsIntegrationTests {
         let model = QueryModel(search: "swift", page: 1, filters: ["ios", "macos"])
 
         // Encode model
-        let encoder = HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+        let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
         let data = try encoder.encode(model)
         let queryString = String(data: data, encoding: .utf8)!
 
@@ -283,7 +283,7 @@ struct URLComponentsIntegrationTests {
 
         // Decode back from URLComponents
         if let queryData = components.query?.data(using: .utf8) {
-            let decoder = HTML.Element.Form.Coder.Decoder(
+            let decoder = HTML.Form.Coder.Decoder(
                 arrayParsingStrategy: .bracketsWithIndices
             )
             let decoded = try decoder.decode(QueryModel.self, from: queryData)
@@ -308,7 +308,7 @@ struct URLComponentsIntegrationTests {
         components.queryItems = queryItems
 
         if let query = components.query?.data(using: .utf8) {
-            let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
+            let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
 
             struct Model: Codable {
                 let name: String
@@ -335,8 +335,8 @@ struct DecimalNumberTests {
             let quantity: Int
         }
 
-        let encoder = HTML.Element.Form.Coder.Encoder()
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+        let encoder = HTML.Form.Coder.Encoder()
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
 
         let original = Model(price: Decimal(string: "19.99")!, quantity: 2)
 
@@ -354,8 +354,8 @@ struct DecimalNumberTests {
             let normalNumber: Int
         }
 
-        let encoder = HTML.Element.Form.Coder.Encoder()
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+        let encoder = HTML.Form.Coder.Encoder()
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
 
         // Test with a number too large for Int64
         let largeDecimal = Decimal(string: "999999999999999999999999999.99")!
@@ -374,8 +374,8 @@ struct DecimalNumberTests {
             let precise: Decimal
         }
 
-        let encoder = HTML.Element.Form.Coder.Encoder()
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+        let encoder = HTML.Form.Coder.Encoder()
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
 
         let original = Model(precise: Decimal(string: "3.141592653589793238462643383279")!)
 
@@ -407,7 +407,7 @@ struct BackwardsCompatibilityTests {
             }
         }
 
-        let decoder = HTML.Element.Form.Coder.Decoder()
+        let decoder = HTML.Form.Coder.Decoder()
         let decoded = try decoder.decode(ModernModel.self, from: data)
 
         #expect(decoded.userName == "John")
@@ -428,7 +428,7 @@ struct BackwardsCompatibilityTests {
             let metadata: [String: String]?  // Added in v4
         }
 
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
         let decoded = try decoder.decode(CurrentModel.self, from: oldData)
 
         #expect(decoded.id == 123)
@@ -449,10 +449,10 @@ struct ErrorMessageTests {
             let optional: String?
         }
 
-        let decoder = HTML.Element.Form.Coder.Decoder()
+        let decoder = HTML.Form.Coder.Decoder()
         let data = Foundation.Data("optional=value".utf8)
 
-        #expect(throws: HTML.Element.Form.Coder.Decoder.Error.self) {
+        #expect(throws: HTML.Form.Coder.Decoder.Error.self) {
             _ = try decoder.decode(Model.self, from: data)
         }
     }
@@ -463,7 +463,7 @@ struct ErrorMessageTests {
             let age: Int
         }
 
-        let decoder = HTML.Element.Form.Coder.Decoder()
+        let decoder = HTML.Form.Coder.Decoder()
         let data = Foundation.Data("age=notanumber".utf8)
 
         do {
@@ -487,12 +487,12 @@ struct MixedStrategyTests {
         }
 
         // Encode with one strategy
-        let encoder = HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+        let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
         let model = Model(items: ["a", "b", "c"])
         let encoded = try encoder.encode(model)
 
         // Try to decode with different strategy
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
 
         // This should fail or produce unexpected results
         #expect(throws: Error.self) {
@@ -510,10 +510,10 @@ struct MixedStrategyTests {
             let items: [String]
         }
 
-        let bracketsDecoder = HTML.Element.Form.Coder.Decoder(
+        let bracketsDecoder = HTML.Form.Coder.Decoder(
             arrayParsingStrategy: .bracketsWithIndices
         )
-        let accumulateDecoder = HTML.Element.Form.Coder.Decoder(
+        let accumulateDecoder = HTML.Form.Coder.Decoder(
             arrayParsingStrategy: .accumulateValues
         )
 
@@ -548,8 +548,8 @@ struct MemoryPerformanceTests {
         let largeArray = Array(0..<1000)
         let model = Model(items: largeArray)
 
-        let encoder = HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+        let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
 
         let startEncode = Date()
         let encoded = try encoder.encode(model)
@@ -570,8 +570,8 @@ struct MemoryPerformanceTests {
             let data: String
         }
 
-        let encoder = HTML.Element.Form.Coder.Encoder()
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+        let encoder = HTML.Form.Coder.Encoder()
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
 
         // Perform multiple encode/decode cycles
         for _ in 0..<100 {

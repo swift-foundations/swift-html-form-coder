@@ -11,8 +11,8 @@ struct ErrorErgonomicsTest {
     @Test("Strategy mismatch provides clear error message")
     func testStrategyMismatchError() throws {
         // Encode with bracketsWithIndices, decode with accumulateValues
-        let encoder = HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
+        let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
 
         struct Model: Codable {
             let name: String
@@ -46,7 +46,7 @@ struct ErrorErgonomicsTest {
 
     @Test("Mixed bracket styles provide clear error")
     func testMixedBracketStylesError() throws {
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
 
         // Mixed styles: empty brackets and indexed brackets
         // RFC 2388 implementation handles mixed styles more gracefully than the old implementation
@@ -72,7 +72,7 @@ struct ErrorErgonomicsTest {
         let accumulateData = Foundation.Data("name=Test&tags=swift&tags=ios&tags=server".utf8)
 
         // Try to decode with bracketsWithIndices
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
 
         struct Model: Codable {
             let name: String
@@ -125,7 +125,7 @@ struct ErrorErgonomicsTest {
             let metadata: [String: String]
         }
 
-        let encoder = HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+        let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
         let model = ComplexModel(
             id: 1,
             name: "Test",
@@ -138,7 +138,7 @@ struct ErrorErgonomicsTest {
         print("Complex model encoded: \(encodedString)")
 
         // Try to decode with wrong strategy
-        let decoder = HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
+        let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
 
         do {
             _ = try decoder.decode(ComplexModel.self, from: encoded)

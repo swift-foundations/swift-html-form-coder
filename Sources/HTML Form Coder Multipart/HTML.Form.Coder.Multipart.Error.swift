@@ -4,7 +4,7 @@ public import RFC_2046
 public import RFC_2183
 public import RFC_7578
 
-extension HTML.Element.Form.Coder.Multipart {
+extension HTML.Form.Coder.Multipart {
     public enum Error: Swift.Error, Sendable {
         case media(String)
         case boundary(RFC_2046.Boundary.Error)

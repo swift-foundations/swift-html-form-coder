@@ -7,17 +7,17 @@ import RFC_2046
 import Testing
 import WHATWG_HTML_FormData
 
-extension HTML.Element.Form.Coder.Multipart {
+extension HTML.Form.Coder.Multipart {
     @Suite
     struct Test {}
 }
 
-extension HTML.Element.Form.Coder.Multipart.Test {
+extension HTML.Form.Coder.Multipart.Test {
     @Test
     func `realized media type carries the pinned boundary`() throws {
         let boundary = try RFC_2046.Boundary("----=_Part_0123456789abcdef0123456789abcdef")
-        let coder = HTML.Element.Form.Coder.Multipart(boundary: boundary)
-        let expected = HTML.Element.Form.Data.Entry.List(entries: [
+        let coder = HTML.Form.Coder.Multipart(boundary: boundary)
+        let expected = HTML.Form.Data.Entry.List(entries: [
             .init(name: "name", stringValue: "Blob")
         ])
         var bytes: [Byte] = []

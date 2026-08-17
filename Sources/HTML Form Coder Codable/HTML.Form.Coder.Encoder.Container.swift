@@ -4,7 +4,7 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder.Encoder {
+extension HTML.Form.Coder.Encoder {
     public enum Container {
         indirect case keyed([String: Container])
         indirect case unkeyed([Container])

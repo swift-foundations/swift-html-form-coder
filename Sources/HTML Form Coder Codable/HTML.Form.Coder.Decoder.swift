@@ -4,7 +4,7 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder {
+extension HTML.Form.Coder {
     public final class Decoder: Swift.Decoder {
         package var containers: [Container] = []
         package var container: Container {
@@ -13,18 +13,18 @@ extension HTML.Element.Form.Coder {
         // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
         // swiftlint:disable:next no_any_protocol_existential
         public package(set) var codingPath: [any CodingKey] = []
-        public var dataDecodingStrategy: HTML.Element.Form.Coder.Strategy.Data.Decoding
-        public var dateDecodingStrategy: HTML.Element.Form.Coder.Strategy.Date.Decoding
-        public var arrayParsingStrategy: HTML.Element.Form.Coder.Strategy.Array.Decoding
-        public var boolDecodingStrategy: HTML.Element.Form.Coder.Strategy.Bool.Decoding
+        public var dataDecodingStrategy: HTML.Form.Coder.Strategy.Data.Decoding
+        public var dateDecodingStrategy: HTML.Form.Coder.Strategy.Date.Decoding
+        public var arrayParsingStrategy: HTML.Form.Coder.Strategy.Array.Decoding
+        public var boolDecodingStrategy: HTML.Form.Coder.Strategy.Bool.Decoding
         public let userInfo: [CodingUserInfoKey: Any] = [:]
 
         public init(
-            dataDecodingStrategy: HTML.Element.Form.Coder.Strategy.Data.Decoding = .deferred,
-            dateDecodingStrategy: HTML.Element.Form.Coder.Strategy.Date.Decoding = .deferred,
-            arrayParsingStrategy: HTML.Element.Form.Coder.Strategy.Array.Decoding =
+            dataDecodingStrategy: HTML.Form.Coder.Strategy.Data.Decoding = .deferred,
+            dateDecodingStrategy: HTML.Form.Coder.Strategy.Date.Decoding = .deferred,
+            arrayParsingStrategy: HTML.Form.Coder.Strategy.Array.Decoding =
                 .accumulateValues,
-            boolDecodingStrategy: HTML.Element.Form.Coder.Strategy.Bool.Decoding = .true
+            boolDecodingStrategy: HTML.Form.Coder.Strategy.Bool.Decoding = .true
         ) {
             self.dataDecodingStrategy = dataDecodingStrategy
             self.dateDecodingStrategy = dateDecodingStrategy
@@ -42,7 +42,7 @@ extension HTML.Element.Form.Coder {
             defer { self.containers.removeLast() }
             do {
                 return try T(from: self)
-            } catch let error as HTML.Element.Form.Coder.Decoder.Error {
+            } catch let error as HTML.Form.Coder.Decoder.Error {
                 throw error
             } catch {
                 throw Error.decodingError(String(describing: error), self.codingPath)
@@ -72,7 +72,7 @@ extension HTML.Element.Form.Coder {
                 // If decode returns nil, it means we should use deferredToData
                 do {
                     return try Foundation.Data(from: self)
-                } catch let error as HTML.Element.Form.Coder.Decoder.Error {
+                } catch let error as HTML.Form.Coder.Decoder.Error {
                     throw error
                 } catch {
                     throw Error.decodingError(String(describing: error), self.codingPath)
@@ -91,7 +91,7 @@ extension HTML.Element.Form.Coder {
                 // If decode returns nil, it means we should use deferredToDate
                 do {
                     return try Date(from: self)
-                } catch let error as HTML.Element.Form.Coder.Decoder.Error {
+                } catch let error as HTML.Form.Coder.Decoder.Error {
                     throw error
                 } catch {
                     throw Error.decodingError(String(describing: error), self.codingPath)
@@ -128,7 +128,7 @@ extension HTML.Element.Form.Coder {
             } else {
                 do {
                     return try T(from: self)
-                } catch let error as HTML.Element.Form.Coder.Decoder.Error {
+                } catch let error as HTML.Form.Coder.Decoder.Error {
                     throw error
                 } catch {
                     throw Error.decodingError(String(describing: error), self.codingPath)

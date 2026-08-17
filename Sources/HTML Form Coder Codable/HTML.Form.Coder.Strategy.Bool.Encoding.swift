@@ -1,7 +1,7 @@
 public import HTML_Form_Coder
 public import HTML_Standard
 
-extension HTML.Element.Form.Coder.Strategy.Bool {
+extension HTML.Form.Coder.Strategy.Bool {
     public struct Encoding: Sendable {
         package let encode: @Sendable (Swift.Bool) -> String
 

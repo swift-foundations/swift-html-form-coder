@@ -4,9 +4,9 @@ public import HTML_Form_Coder_Multipart
 public import HTML_Standard
 import RFC_7578
 
-extension HTML.Element.Form.Coder.Multipart {
+extension HTML.Form.Coder.Multipart {
     struct Keyed<Key: CodingKey>: KeyedEncodingContainerProtocol {
-        let encoder: HTML.Element.Form.Coder.Multipart.Field.Encoder
+        let encoder: HTML.Form.Coder.Multipart.Field.Encoder
         // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
         // swiftlint:disable:next no_any_protocol_existential
         var codingPath: [any CodingKey]
@@ -18,92 +18,92 @@ extension HTML.Element.Form.Coder.Multipart {
         mutating func encode(_ value: Bool, forKey key: Key) {
             let stringValue = encoder.coder.encode(value)
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: stringValue)
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: stringValue)
             )
         }
 
         mutating func encode(_ value: String, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: value)
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: value)
             )
         }
 
         mutating func encode(_ value: Int, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: Double, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: Float, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: Int8, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: Int16, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: Int32, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: Int64, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: UInt, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: UInt8, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: UInt16, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: UInt32, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode(_ value: UInt64, forKey key: Key) {
             encoder.fields.append(
-                HTML.Element.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
+                HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: String(value))
             )
         }
 
         mutating func encode<T>(
             _ value: T,
             forKey key: Key
-        ) throws(HTML.Element.Form.Coder.Multipart.Error) where T: Encodable {
+        ) throws(HTML.Form.Coder.Multipart.Error) where T: Encodable {
             // 1. Try file extraction first
             if let fileExtractor = encoder.coder.file,
                 let file = fileExtractor(value)
@@ -116,7 +116,7 @@ extension HTML.Element.Form.Coder.Multipart {
             if let date = value as? Date {
                 let stringValue = encoder.coder.encode(date)
                 encoder.fields.append(
-                    HTML.Element.Form.Coder.Multipart.Field(
+                    HTML.Form.Coder.Multipart.Field(
                         name: key.stringValue,
                         value: stringValue
                     )
@@ -135,7 +135,7 @@ extension HTML.Element.Form.Coder.Multipart {
                 let stringValue = customEncoder(value, key.stringValue)
             {
                 encoder.fields.append(
-                    HTML.Element.Form.Coder.Multipart.Field(
+                    HTML.Form.Coder.Multipart.Field(
                         name: key.stringValue,
                         value: stringValue
                     )
@@ -150,11 +150,11 @@ extension HTML.Element.Form.Coder.Multipart {
             do {
                 jsonData = try jsonEncoder.encode(value)
             } catch {
-                throw HTML.Element.Form.Coder.Multipart.Error.media(String(describing: error))
+                throw HTML.Form.Coder.Multipart.Error.media(String(describing: error))
             }
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 encoder.fields.append(
-                    HTML.Element.Form.Coder.Multipart.Field(
+                    HTML.Form.Coder.Multipart.Field(
                         name: key.stringValue,
                         value: jsonString
                     )
@@ -217,7 +217,7 @@ extension HTML.Element.Form.Coder.Multipart {
                 }
 
                 encoder.fields.append(
-                    HTML.Element.Form.Coder.Multipart.Field(name: fieldName, value: stringValue)
+                    HTML.Form.Coder.Multipart.Field(name: fieldName, value: stringValue)
                 )
             }
         }

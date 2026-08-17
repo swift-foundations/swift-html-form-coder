@@ -4,8 +4,8 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Element.Form.Coder.Encoder {
-    static func convert(_ container: Container) -> HTML.Element.Form.Coder.Nested.Data {
+extension HTML.Form.Coder.Encoder {
+    static func convert(_ container: Container) -> HTML.Form.Coder.Nested.Data {
         switch container {
         case .singleValue(let value):
             .value(value)
@@ -20,7 +20,7 @@ extension HTML.Element.Form.Coder.Encoder {
 
     static func serialize(
         _ container: Container,
-        strategy: HTML.Element.Form.Coder.Strategy.Array.Encoding
+        strategy: HTML.Form.Coder.Strategy.Array.Encoding
     ) -> String {
         Self.convert(container).encode(strategy: strategy.nesting, percentEncode: false)
     }

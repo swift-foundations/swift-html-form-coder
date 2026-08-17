@@ -2,7 +2,7 @@ package import Foundation
 public import HTML_Form_Coder
 public import HTML_Standard
 
-extension HTML.Element.Form.Coder.Strategy.Date {
+extension HTML.Form.Coder.Strategy.Date {
     package enum Format {
         package static let encode: DateFormatter =
             formatter("yyyy-MM-dd'T'HH:mm:ss.SSSXXXXX")

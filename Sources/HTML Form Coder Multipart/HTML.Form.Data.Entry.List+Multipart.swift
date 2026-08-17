@@ -7,11 +7,11 @@ public import RFC_2183
 public import RFC_7578
 public import WHATWG_HTML_FormData
 
-extension HTML.Element.Form.Data.Entry.List {
+extension HTML.Form.Data.Entry.List {
     public init(
         _ multipart: RFC_2046.Multipart
-    ) throws(HTML.Element.Form.Coder.Multipart.Error) {
-        var entries: [HTML.Element.Form.Data.Entry] = []
+    ) throws(HTML.Form.Coder.Multipart.Error) {
+        var entries: [HTML.Form.Data.Entry] = []
         entries.reserveCapacity(multipart.parts.count)
 
         for part in multipart.parts {
@@ -31,7 +31,7 @@ extension HTML.Element.Form.Data.Entry.List {
                 entries.append(
                     .init(
                         name: file.fieldName,
-                        file: HTML.Element.Form.Data.File(
+                        file: HTML.Form.Data.File(
                             name: file.filename.value,
                             type: file.contentType?.headerValue ?? "",
                             body: file.content
@@ -49,7 +49,7 @@ extension HTML.Element.Form.Data.Entry.List {
 
     public func multipart(
         boundary: RFC_2046.Boundary
-    ) throws(HTML.Element.Form.Coder.Multipart.Error) -> RFC_2046.Multipart {
+    ) throws(HTML.Form.Coder.Multipart.Error) -> RFC_2046.Multipart {
         var parts: [RFC_2046.BodyPart] = []
         parts.reserveCapacity(count)
 

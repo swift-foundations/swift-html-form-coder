@@ -29,9 +29,9 @@ import WHATWG_HTML_Forms
 struct FormDataConversionTests {
 
     @Test
-    func `HTML.Element.Form.Data.Entry.List to Multipart conversion with text fields`() throws {
+    func `HTML.Form.Data.Entry.List to Multipart conversion with text fields`() throws {
         // Arrange
-        var formData = HTML.Element.Form.Data.Entry.List()
+        var formData = HTML.Form.Data.Entry.List()
         formData.append(name: "username", value: "alice")
         formData.append(name: "email", value: "alice@example.com")
 
@@ -48,13 +48,13 @@ struct FormDataConversionTests {
     }
 
     @Test
-    func `HTML.Element.Form.Data.Entry.List to Multipart conversion with file`() throws {
+    func `HTML.Form.Data.Entry.List to Multipart conversion with file`() throws {
         // Arrange
-        var formData = HTML.Element.Form.Data.Entry.List()
+        var formData = HTML.Form.Data.Entry.List()
         formData.append(name: "username", value: "alice")
         formData.append(
             name: "avatar",
-            file: HTML.Element.Form.Data.File(
+            file: HTML.Form.Data.File(
                 name: "photo.jpg",
                 type: "image/jpeg",
                 body: [0xFF, 0xD8, 0xFF, 0xE0]  // JPEG magic number
@@ -82,7 +82,7 @@ struct FormDataConversionTests {
     }
 
     @Test
-    func `Multipart to HTML.Element.Form.Data.Entry.List conversion with text fields`() throws {
+    func `Multipart to HTML.Form.Data.Entry.List conversion with text fields`() throws {
         // Arrange
         let multipart = try RFC_2046.Multipart.formData(
             fields: [
@@ -93,7 +93,7 @@ struct FormDataConversionTests {
         )
 
         // Act
-        let formData = try HTML.Element.Form.Data.Entry.List(multipart)
+        let formData = try HTML.Form.Data.Entry.List(multipart)
 
         // Assert
         #expect(formData.count == 2)
@@ -102,7 +102,7 @@ struct FormDataConversionTests {
     }
 
     @Test
-    func `Multipart to HTML.Element.Form.Data.Entry.List conversion with file`() throws {
+    func `Multipart to HTML.Form.Data.Entry.List conversion with file`() throws {
         // Arrange
         let imageData: [UInt8] = [0xFF, 0xD8, 0xFF, 0xE0]  // JPEG magic number
         let file = try RFC_7578.Form.Data.File(
@@ -118,7 +118,7 @@ struct FormDataConversionTests {
         )
 
         // Act
-        let formData = try HTML.Element.Form.Data.Entry.List(multipart)
+        let formData = try HTML.Form.Data.Entry.List(multipart)
 
         // Assert
         #expect(formData.count == 2)
@@ -137,12 +137,12 @@ struct FormDataConversionTests {
     @Test
     func `Round-trip conversion preserves data`() throws {
         // Arrange
-        var original = HTML.Element.Form.Data.Entry.List()
+        var original = HTML.Form.Data.Entry.List()
         original.append(name: "field1", value: "value1")
         original.append(name: "field2", value: "value2")
         original.append(
             name: "file1",
-            file: HTML.Element.Form.Data.File(
+            file: HTML.Form.Data.File(
                 name: "test.txt",
                 type: "text/plain",
                 body: Array("Hello, World!".utf8)
@@ -151,7 +151,7 @@ struct FormDataConversionTests {
 
         // Act - Convert to multipart and back
         let multipart = try original.multipart(boundary: .random())
-        let restored = try HTML.Element.Form.Data.Entry.List(multipart)
+        let restored = try HTML.Form.Data.Entry.List(multipart)
 
         // Assert
         #expect(restored.count == original.count)
@@ -166,13 +166,13 @@ struct FormDataConversionTests {
     @Test
     func `Content-Type header generation`() throws {
         // Arrange
-        let formData = HTML.Element.Form.Data.Entry.List(entries: [
+        let formData = HTML.Form.Data.Entry.List(entries: [
             .init(name: "name", stringValue: "Blob")
         ])
 
         // Act
         var bytes: [Byte] = []
-        let contentType = try HTML.Element.Form.Coder.Multipart().encode(formData, into: &bytes)
+        let contentType = try HTML.Form.Coder.Multipart().encode(formData, into: &bytes)
 
         // Assert
         #expect(contentType.type == "multipart")
@@ -184,7 +184,7 @@ struct FormDataConversionTests {
     @Test
     func `Custom boundary is preserved`() throws {
         // Arrange
-        var formData = HTML.Element.Form.Data.Entry.List()
+        var formData = HTML.Form.Data.Entry.List()
         formData.append(name: "test", value: "value")
 
         let customBoundary = try RFC_2046.Boundary("MyCustomBoundary123")
@@ -197,12 +197,12 @@ struct FormDataConversionTests {
     }
 
     @Test
-    func `Empty HTML.Element.Form.Data.Entry.List throws a typed error`() {
+    func `Empty HTML.Form.Data.Entry.List throws a typed error`() {
         // Arrange
-        let emptyFormData = HTML.Element.Form.Data.Entry.List()
+        let emptyFormData = HTML.Form.Data.Entry.List()
 
         // Act & Assert
-        #expect(throws: HTML.Element.Form.Coder.Multipart.Error.self) {
+        #expect(throws: HTML.Form.Coder.Multipart.Error.self) {
             _ = try emptyFormData.multipart(boundary: .random())
         }
     }
@@ -210,14 +210,14 @@ struct FormDataConversionTests {
     @Test
     func `Multiple values for same field name preserved`() throws {
         // Arrange
-        var formData = HTML.Element.Form.Data.Entry.List()
+        var formData = HTML.Form.Data.Entry.List()
         formData.append(name: "interests", value: "swift")
         formData.append(name: "interests", value: "web")
         formData.append(name: "interests", value: "server")
 
         // Act
         let multipart = try formData.multipart(boundary: .random())
-        let restored = try HTML.Element.Form.Data.Entry.List(multipart)
+        let restored = try HTML.Form.Data.Entry.List(multipart)
 
         // Assert
         let interests = restored.all(named: "interests")
