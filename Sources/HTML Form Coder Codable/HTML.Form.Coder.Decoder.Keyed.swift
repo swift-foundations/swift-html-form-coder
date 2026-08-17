@@ -4,9 +4,9 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Form.Coder.Decoder {
+extension HTML.Element.Form.Coder.Decoder {
     struct KeyedContainer<Key: CodingKey>: KeyedDecodingContainerProtocol {
-        private(set) var decoder: HTML.Form.Coder.Decoder
+        private(set) var decoder: HTML.Element.Form.Coder.Decoder
         let container: [String: Container]
 
         // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.
@@ -327,7 +327,7 @@ extension HTML.Form.Coder.Decoder {
             guard let container = self.container[key.stringValue] else {
                 throw Error.decodingError("Expected value at \(key), got nil", self.codingPath)
             }
-            let decoder = HTML.Form.Coder.Decoder()
+            let decoder = HTML.Element.Form.Coder.Decoder()
             decoder.containers = [container]
             decoder.codingPath = self.codingPath
             decoder.dataDecodingStrategy = self.decoder.dataDecodingStrategy

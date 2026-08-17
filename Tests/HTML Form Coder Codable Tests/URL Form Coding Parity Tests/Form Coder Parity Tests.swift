@@ -4,7 +4,7 @@ import HTML_Form_Coder_Codable
 import HTML_Standard
 import Testing
 
-// Batch-0 parity corpus: HTML.Form.Coder.Encoder / HTML.Form.Coder.Decoder wire-shape snapshots.
+// Batch-0 parity corpus: HTML.Element.Form.Coder.Encoder / HTML.Element.Form.Coder.Decoder wire-shape snapshots.
 //
 // For every strategy configuration in real-world use (mailgun, mailgun list
 // members `.yes`, stripe `.bracketsWithIndices`, identities) plus each
@@ -81,7 +81,7 @@ private let flatFixture = FlatFixture(
 // MARK: - Real-world configuration replicas
 
 /// Replica of `rfc2822Formatter` in swift-mailgun-types
-/// `Sources/Mailgun Types Shared/HTML.Form.Coder.Coder.swift`.
+/// `Sources/Mailgun Types Shared/HTML.Element.Form.Coder.Coder.swift`.
 private func rfc2822Formatter() -> DateFormatter {
     let formatter = DateFormatter()
     formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
@@ -99,18 +99,18 @@ private func yyyyMMddFormatter() -> DateFormatter {
     return formatter
 }
 
-/// Replica of `HTML.Form.Coder.Encoder.mailgun` (swift-mailgun-types HTML.Form.Coder.Coder.swift:58).
-private func mailgunEncoder() -> HTML.Form.Coder.Encoder {
-    HTML.Form.Coder.Encoder(
+/// Replica of `HTML.Element.Form.Coder.Encoder.mailgun` (swift-mailgun-types HTML.Element.Form.Coder.Coder.swift:58).
+private func mailgunEncoder() -> HTML.Element.Form.Coder.Encoder {
+    HTML.Element.Form.Coder.Encoder(
         dataEncodingStrategy: .base64,
         dateEncodingStrategy: .init { rfc2822Formatter().string(from: $0) },
         arrayEncodingStrategy: .brackets
     )
 }
 
-/// Replica of `HTML.Form.Coder.Decoder.mailgun` (swift-mailgun-types HTML.Form.Coder.Coder.swift:12).
-private func mailgunDecoder() -> HTML.Form.Coder.Decoder {
-    HTML.Form.Coder.Decoder(
+/// Replica of `HTML.Element.Form.Coder.Decoder.mailgun` (swift-mailgun-types HTML.Element.Form.Coder.Coder.swift:12).
+private func mailgunDecoder() -> HTML.Element.Form.Coder.Decoder {
+    HTML.Element.Form.Coder.Decoder(
         dataDecodingStrategy: .base64,
         dateDecodingStrategy: .init { dateString in
             if let date = rfc2822Formatter().date(from: dateString) { return date }
@@ -133,8 +133,8 @@ private struct Case {
     init<T: Codable & Equatable>(
         _ name: String,
         _ fixture: T,
-        encoder: @autoclosure @escaping () -> HTML.Form.Coder.Encoder,
-        decoder: @autoclosure @escaping () -> HTML.Form.Coder.Decoder
+        encoder: @autoclosure @escaping () -> HTML.Element.Form.Coder.Encoder,
+        decoder: @autoclosure @escaping () -> HTML.Element.Form.Coder.Decoder
     ) {
         self.name = name
         self.run = {
@@ -161,66 +161,70 @@ private func makeCases() -> [Case] {
         Case(
             "default-flat",
             flatFixture,
-            encoder: HTML.Form.Coder.Encoder(),
-            decoder: HTML.Form.Coder.Decoder()
+            encoder: HTML.Element.Form.Coder.Encoder(),
+            decoder: HTML.Element.Form.Coder.Decoder()
         ),
         Case(
             "default-nested",
             nestedFixture,
-            encoder: HTML.Form.Coder.Encoder(),
-            decoder: HTML.Form.Coder.Decoder()
+            encoder: HTML.Element.Form.Coder.Encoder(),
+            decoder: HTML.Element.Form.Coder.Decoder()
         ),
         // Bool axis
         Case(
             "bool-yesNo",
             flatFixture,
-            encoder: HTML.Form.Coder.Encoder(boolEncodingStrategy: .yes),
-            decoder: HTML.Form.Coder.Decoder(boolDecodingStrategy: .yes)
+            encoder: HTML.Element.Form.Coder.Encoder(boolEncodingStrategy: .yes),
+            decoder: HTML.Element.Form.Coder.Decoder(boolDecodingStrategy: .yes)
         ),
         // Array axis
         Case(
             "array-brackets",
             nestedFixture,
-            encoder: HTML.Form.Coder.Encoder(arrayEncodingStrategy: .brackets),
-            decoder: HTML.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
+            encoder: HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .brackets),
+            decoder: HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .brackets)
         ),
         Case(
             "array-bracketsWithIndices",
             nestedFixture,
-            encoder: HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices),
-            decoder: HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+            encoder: HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices),
+            decoder: HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
         ),
         // Date axis
         Case(
             "date-secondsSince1970",
             flatFixture,
-            encoder: HTML.Form.Coder.Encoder(dateEncodingStrategy: .seconds),
-            decoder: HTML.Form.Coder.Decoder(dateDecodingStrategy: .seconds)
+            encoder: HTML.Element.Form.Coder.Encoder(dateEncodingStrategy: .seconds),
+            decoder: HTML.Element.Form.Coder.Decoder(dateDecodingStrategy: .seconds)
         ),
         Case(
             "date-millisecondsSince1970",
             flatFixture,
-            encoder: HTML.Form.Coder.Encoder(dateEncodingStrategy: .milliseconds),
-            decoder: HTML.Form.Coder.Decoder(dateDecodingStrategy: .milliseconds)
+            encoder: HTML.Element.Form.Coder.Encoder(dateEncodingStrategy: .milliseconds),
+            decoder: HTML.Element.Form.Coder.Decoder(dateDecodingStrategy: .milliseconds)
         ),
         Case(
             "date-iso8601",
             flatFixture,
-            encoder: HTML.Form.Coder.Encoder(dateEncodingStrategy: .iso8601),
-            decoder: HTML.Form.Coder.Decoder(dateDecodingStrategy: .iso8601)
+            encoder: HTML.Element.Form.Coder.Encoder(dateEncodingStrategy: .iso8601),
+            decoder: HTML.Element.Form.Coder.Decoder(dateDecodingStrategy: .iso8601)
         ),
         Case(
             "date-formatted-yyyyMMdd",
             flatFixture,
-            encoder: HTML.Form.Coder.Encoder(dateEncodingStrategy: .formatted(yyyyMMddFormatter())),
-            decoder: HTML.Form.Coder.Decoder(dateDecodingStrategy: .formatted(yyyyMMddFormatter()))
+            encoder: HTML.Element.Form.Coder.Encoder(
+                dateEncodingStrategy: .formatted(yyyyMMddFormatter())
+            ),
+            decoder: HTML.Element.Form.Coder.Decoder(
+                dateDecodingStrategy: .formatted(yyyyMMddFormatter())
+            )
         ),
         // Foundation.Data axis
         Case(
             "data-base64",
             flatFixture,
-            encoder: HTML.Form.Coder.Encoder(dataEncodingStrategy: .base64),
-            decoder: HTML.Form.Coder.Decoder(dataDecodingStrategy: .base64)
+            encoder: HTML.Element.Form.Coder.Encoder(dataEncodingStrategy: .base64),
+            decoder: HTML.Element.Form.Coder.Decoder(dataDecodingStrategy: .base64)
         ),
         // Real-world configurations
         Case(
@@ -248,7 +252,7 @@ private func makeCases() -> [Case] {
             "mailgun-routes",
             flatFixture,
             encoder: {
-                // Replica of HTML.Form.Coder.Encoder.mailgunRoutes (HTML.Form.Coder.Coder.swift:66).
+                // Replica of HTML.Element.Form.Coder.Encoder.mailgunRoutes (HTML.Element.Form.Coder.Coder.swift:66).
                 let encoder = mailgunEncoder()
                 encoder.arrayEncodingStrategy = .accumulateValues
                 return encoder
@@ -263,8 +267,8 @@ private func makeCases() -> [Case] {
             "mailgun-events",
             flatFixture,
             encoder: {
-                // Replica of HTML.Form.Coder.Encoder.mailgunEvents (HTML.Form.Coder.Coder.swift:74).
-                return HTML.Form.Coder.Encoder(
+                // Replica of HTML.Element.Form.Coder.Encoder.mailgunEvents (HTML.Element.Form.Coder.Coder.swift:74).
+                return HTML.Element.Form.Coder.Encoder(
                     dataEncodingStrategy: .base64,
                     dateEncodingStrategy: .init { String(Int($0.timeIntervalSince1970)) },
                     arrayEncodingStrategy: .accumulateValues
@@ -280,11 +284,11 @@ private func makeCases() -> [Case] {
             "stripe",
             nestedFixture,
             // Replica of swift-stripe-types Stripe Types Shared/FormCoding.swift:24.
-            encoder: HTML.Form.Coder.Encoder(
+            encoder: HTML.Element.Form.Coder.Encoder(
                 dateEncodingStrategy: .seconds,
                 arrayEncodingStrategy: .bracketsWithIndices
             ),
-            decoder: HTML.Form.Coder.Decoder(
+            decoder: HTML.Element.Form.Coder.Decoder(
                 dateDecodingStrategy: .seconds,
                 arrayParsingStrategy: .bracketsWithIndices
             )
@@ -292,9 +296,9 @@ private func makeCases() -> [Case] {
         Case(
             "identities",
             nestedFixture,
-            // Replica of swift-identities-types HTML.Form.Coder.Coding.identities.swift:19.
-            encoder: HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices),
-            decoder: HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+            // Replica of swift-identities-types HTML.Element.Form.Coder.Coding.identities.swift:19.
+            encoder: HTML.Element.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices),
+            decoder: HTML.Element.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
         ),
     ]
 }

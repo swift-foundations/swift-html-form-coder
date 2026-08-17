@@ -2,7 +2,7 @@ public import HTML_Form_Coder
 public import HTML_Standard
 public import Parser_Primitives
 
-extension HTML.Form.Coder.Nested.Data.Parse.Pairs {
+extension HTML.Element.Form.Coder.Nested.Data.Parse.Pairs {
     public struct Pair: Sendable {
         public let key: Input
         public let value: Input

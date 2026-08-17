@@ -12,7 +12,7 @@ import WHATWG_HTML_Forms
 
 // Batch-0 parity corpus: FormData/Multipart veneer wire-shape snapshots.
 //
-// Encodes a representative HTML.Form.Data.Entry.List (text fields, repeated field
+// Encodes a representative HTML.Element.Form.Data.Entry.List (text fields, repeated field
 // names, and a file part with fixed bytes/filename/contentType) with a PINNED
 // boundary (the API accepts `boundary:` injection at
 // Sources/MultipartFormCoding/FormData+Multipart.swift:156 and :228;
@@ -24,7 +24,7 @@ import WHATWG_HTML_Forms
 // Note: the multipart Bool.Encoder strategies (.trueFalse/.yesNo/.numeric,
 // dossier B2-06) live in swift-url-routing's RFC_2046.Multipart.Encoder, not
 // in this package's surface or dependency stack; MultipartFormCoding exposes
-// no Bool or array strategy axis. `HTML.Form.Data.Entry.List` represents
+// no Bool or array strategy axis. `HTML.Element.Form.Data.Entry.List` represents
 // repetition as repeated entry names instead.
 
 @Suite("Multipart Coder Parity")
@@ -34,14 +34,14 @@ struct MultipartCoderParityTests {
         // PINNED boundary: grammar-valid ASCII, well under the 70-char limit.
         let boundary = try RFC_2046.Boundary("----CoderParityBoundary0123456789")
 
-        var formData = HTML.Form.Data.Entry.List()
+        var formData = HTML.Element.Form.Data.Entry.List()
         formData.append(name: "username", value: "alice")
         formData.append(name: "bio", value: "hello world\nsecond line ✓")
         formData.append(name: "tag", value: "swift")
         formData.append(name: "tag", value: "server")
         formData.append(
             name: "notes",
-            file: HTML.Form.Data.File(
+            file: HTML.Element.Form.Data.File(
                 name: "notes.txt",
                 type: "text/plain",
                 body: Array("fixed file bytes 0123\n".utf8)
@@ -49,7 +49,7 @@ struct MultipartCoderParityTests {
         )
 
         // Encode: full body bytes with the pinned boundary.
-        let coder = HTML.Form.Coder.Multipart(boundary: boundary)
+        let coder = HTML.Element.Form.Coder.Multipart(boundary: boundary)
         var bodyBytes: [Byte] = []
         let contentType = try coder.encode(formData, into: &bodyBytes)
         let body = String(decoding: bodyBytes.map(\.underlying), as: UTF8.self)

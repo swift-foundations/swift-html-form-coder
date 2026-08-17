@@ -2,7 +2,7 @@ public import Foundation
 public import HTML_Form_Coder
 public import HTML_Standard
 
-extension HTML.Form.Coder.Strategy.Data {
+extension HTML.Element.Form.Coder.Strategy.Data {
     public struct Encoding: Sendable {
         package let encode: @Sendable (Foundation.Data) -> String
 

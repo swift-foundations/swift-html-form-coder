@@ -4,7 +4,7 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Form.Coder.Decoder {
+extension HTML.Element.Form.Coder.Decoder {
     public enum Container {
         indirect case keyed([String: Container])
         indirect case unkeyed([Container])
@@ -42,7 +42,7 @@ extension HTML.Form.Coder.Decoder {
     }
 }
 
-extension HTML.Form.Coder.Decoder.Container: CustomStringConvertible {
+extension HTML.Element.Form.Coder.Decoder.Container: CustomStringConvertible {
     public var description: String {
         switch self {
         case .keyed(let values):

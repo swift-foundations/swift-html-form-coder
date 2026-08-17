@@ -1,7 +1,7 @@
 public import HTML_Form_Coder
 public import HTML_Standard
 
-extension HTML.Form.Coder {
+extension HTML.Element.Form.Coder {
     public enum Error: Swift.Error, Sendable, CustomStringConvertible {
         case coding(String)
         case boundary

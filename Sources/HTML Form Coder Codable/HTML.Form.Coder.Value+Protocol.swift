@@ -4,10 +4,10 @@ public import HTML_Standard
 public import HTTP_Body
 import Media_Type_Standard
 
-extension HTML.Form.Coder.Value: RFC_9110.Body.Coder.`Protocol` {
+extension HTML.Element.Form.Coder.Value: RFC_9110.Body.Coder.`Protocol` {
     public typealias Input = [Byte]
     public typealias Buffer = [Byte]
-    public typealias Failure = HTML.Form.Coder.Error
+    public typealias Failure = HTML.Element.Form.Coder.Error
     public typealias Body = Never
 
     public var body: Never {

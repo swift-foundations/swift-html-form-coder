@@ -1,7 +1,7 @@
 public import HTML_Form_Coder
 public import HTML_Standard
 
-extension HTML.Form.Coder.Multipart.Error: CustomStringConvertible {
+extension HTML.Element.Form.Coder.Multipart.Error: CustomStringConvertible {
     public var description: String {
         switch self {
         case .media(let message): return message

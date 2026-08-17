@@ -1,7 +1,7 @@
 public import HTML_Form_Coder
 public import HTML_Standard
 
-extension HTML.Form.Coder.Nested {
+extension HTML.Element.Form.Coder.Nested {
     /// A hierarchical projection of flat form names such as `user[name]` and
     /// `tags[]`.
     public indirect enum Data: Sendable, Equatable {
@@ -11,7 +11,7 @@ extension HTML.Form.Coder.Nested {
     }
 }
 
-extension HTML.Form.Coder.Nested.Data {
+extension HTML.Element.Form.Coder.Nested.Data {
     public var stringValue: String? {
         guard case .value(let value) = self else { return nil }
         return value

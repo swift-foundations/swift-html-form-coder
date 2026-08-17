@@ -10,10 +10,10 @@ import RFC_2183
 import RFC_7578
 public import WHATWG_HTML_FormData
 
-extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
+extension HTML.Element.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
     public typealias Input = [Byte]
     public typealias Buffer = [Byte]
-    public typealias Failure = HTML.Form.Coder.Error
+    public typealias Failure = HTML.Element.Form.Coder.Error
     public typealias Body = Never
 
     public var body: Never {
@@ -28,7 +28,7 @@ extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
 
     public func parse(_ input: inout [Byte]) throws(Failure) -> Output {
         guard let boundary else { throw .boundary }
-        return try parse(&input, coder: HTML.Form.Coder.Multipart(boundary: boundary))
+        return try parse(&input, coder: HTML.Element.Form.Coder.Multipart(boundary: boundary))
     }
 
     public func decode(
@@ -36,10 +36,10 @@ extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
         as mediaType: HTTP.MediaType
     ) throws(Failure) -> Output {
         do {
-            var multipart = HTML.Form.Coder.Multipart(boundary: boundary)
+            var multipart = HTML.Element.Form.Coder.Multipart(boundary: boundary)
             let entries = try multipart.decode(&input, as: mediaType)
             var bytes: [Byte] = []
-            HTML.Form.Coder().serialize(entries, into: &bytes)
+            HTML.Element.Form.Coder().serialize(entries, into: &bytes)
             return try decoder.decode(
                 Output.self,
                 from: Foundation.Data(bytes.map(\.underlying))
@@ -61,22 +61,22 @@ extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
         into buffer: inout [Byte]
     ) throws(Failure) -> HTTP.MediaType {
         do {
-            let fields = HTML.Form.Coder.Multipart.Field.Encoder(coder: encoder)
+            let fields = HTML.Element.Form.Coder.Multipart.Field.Encoder(coder: encoder)
             try output.encode(to: fields)
             guard !fields.fields.isEmpty || !fields.files.isEmpty else {
-                throw HTML.Form.Coder.Error.coding(
+                throw HTML.Element.Form.Coder.Error.coding(
                     "Cannot encode an HTML multipart form with no fields"
                 )
             }
 
-            let entries = HTML.Form.Data.Entry.List(
+            let entries = HTML.Element.Form.Data.Entry.List(
                 entries: fields.fields.map {
-                    HTML.Form.Data.Entry(name: $0.name, stringValue: $0.value)
+                    HTML.Element.Form.Data.Entry(name: $0.name, stringValue: $0.value)
                 }
                     + fields.files.map {
-                        HTML.Form.Data.Entry(
+                        HTML.Element.Form.Data.Entry(
                             name: $0.fieldName,
-                            file: HTML.Form.Data.File(
+                            file: HTML.Element.Form.Data.File(
                                 name: $0.filename.value,
                                 type: $0.contentType?.headerValue ?? "",
                                 body: $0.content
@@ -84,11 +84,11 @@ extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
                         )
                     }
             )
-            return try HTML.Form.Coder.Multipart(boundary: boundary).encode(
+            return try HTML.Element.Form.Coder.Multipart(boundary: boundary).encode(
                 entries,
                 into: &buffer
             )
-        } catch let error as HTML.Form.Coder.Error {
+        } catch let error as HTML.Element.Form.Coder.Error {
             throw error
         } catch {
             throw .coding(String(describing: error))
@@ -97,12 +97,12 @@ extension HTML.Form.Coder.Multipart.Value: RFC_9110.Body.Coder.`Protocol` {
 
     private func parse(
         _ input: inout [Byte],
-        coder: HTML.Form.Coder.Multipart
+        coder: HTML.Element.Form.Coder.Multipart
     ) throws(Failure) -> Output {
         do {
             let entries = try coder.parse(&input)
             var bytes: [Byte] = []
-            HTML.Form.Coder().serialize(entries, into: &bytes)
+            HTML.Element.Form.Coder().serialize(entries, into: &bytes)
             return try decoder.decode(
                 Output.self,
                 from: Foundation.Data(bytes.map(\.underlying))

@@ -4,9 +4,9 @@ import HTML_Form_Coder_Nested
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Form.Coder.Decoder {
+extension HTML.Element.Form.Coder.Decoder {
     struct SingleValueContainer: SingleValueDecodingContainer {
-        let decoder: HTML.Form.Coder.Decoder
+        let decoder: HTML.Element.Form.Coder.Decoder
         let container: Container
 
         // reason: stdlib Codable protocol requirement forces this existential (any CodingKey / Encoder / Decoder / *Container); the conforming type cannot narrow it.

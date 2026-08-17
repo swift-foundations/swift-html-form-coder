@@ -1,5 +1,5 @@
 //
-//  HTML.Form.Coder.Nested.Data.Parser.swift
+//  HTML.Element.Form.Coder.Nested.Data.Parser.swift
 //  swift-rfc-2388
 //
 //  RFC 2388: Returning Values from Forms: multipart/form-data
@@ -9,7 +9,7 @@ public import HTML_Form_Coder
 public import HTML_Standard
 import WHATWG_Form_URL_Encoded
 
-extension HTML.Form.Coder.Nested.Data {
+extension HTML.Element.Form.Coder.Nested.Data {
     /// Parses a URL-encoded query string into structured form data.
     ///
     /// This function implements RFC 2388 form data parsing with support for
@@ -19,28 +19,28 @@ extension HTML.Form.Coder.Nested.Data {
     ///   - query: The URL-encoded query string to parse
     ///   - strategy: The parsing strategy for array notation
     ///   - sort: Whether to sort the key-value pairs before parsing
-    /// - Returns: A HTML.Form.Coder.Nested.Data structure representing the parsed data
+    /// - Returns: A HTML.Element.Form.Coder.Nested.Data structure representing the parsed data
     ///
     /// ## Example
     ///
     /// ```swift
     /// // Simple values
-    /// let data = HTML.Form.Coder.Nested.Data.parse("name=John&age=30")
+    /// let data = HTML.Element.Form.Coder.Nested.Data.parse("name=John&age=30")
     /// // Result: .dictionary(["name": .value("John"), "age": .value("30")])
     ///
     /// // Arrays with brackets
-    /// let tags = HTML.Form.Coder.Nested.Data.parse("tags[]=swift&tags[]=vapor", strategy: .brackets)
+    /// let tags = HTML.Element.Form.Coder.Nested.Data.parse("tags[]=swift&tags[]=vapor", strategy: .brackets)
     /// // Result: .dictionary(["tags": .array([.value("swift"), .value("vapor")])])
     ///
     /// // Nested objects
-    /// let user = HTML.Form.Coder.Nested.Data.parse("user[name]=John&user[email]=john@example.com")
+    /// let user = HTML.Element.Form.Coder.Nested.Data.parse("user[name]=John&user[email]=john@example.com")
     /// // Result: .dictionary(["user": .dictionary(["name": .value("John"), "email": .value("john@example.com")])])
     /// ```
     public static func parse(
         _ query: String,
-        strategy: HTML.Form.Coder.Strategy.Nesting = .brackets,
+        strategy: HTML.Element.Form.Coder.Strategy.Nesting = .brackets,
         sort: Bool = false
-    ) -> HTML.Form.Coder.Nested.Data {
+    ) -> HTML.Element.Form.Coder.Nested.Data {
         switch strategy {
         case .brackets, .bracketsWithIndices:
             let isArray: (String) -> Bool = { segment in
@@ -63,13 +63,13 @@ extension HTML.Form.Coder.Nested.Data {
     ///   - query: The URL-encoded query string
     ///   - isArray: Function to determine if a path segment represents an array
     ///   - sort: Whether to sort key-value pairs before parsing
-    /// - Returns: Parsed HTML.Form.Coder.Nested.Data structure
+    /// - Returns: Parsed HTML.Element.Form.Coder.Nested.Data structure
     private static func parseBracketNotation(
         _ query: String,
         isArray: @escaping (String) -> Bool,
         sort: Bool
-    ) -> HTML.Form.Coder.Nested.Data {
-        var result = HTML.Form.Coder.Nested.Data.dictionary([:])
+    ) -> HTML.Element.Form.Coder.Nested.Data {
+        var result = HTML.Element.Form.Coder.Nested.Data.dictionary([:])
 
         for (name, value) in extractPairs(from: query, sort: sort) {
             let path = extractPath(from: name)
@@ -87,12 +87,12 @@ extension HTML.Form.Coder.Nested.Data {
     /// - Parameters:
     ///   - query: The URL-encoded query string
     ///   - sort: Whether to sort key-value pairs before parsing
-    /// - Returns: Parsed HTML.Form.Coder.Nested.Data structure
+    /// - Returns: Parsed HTML.Element.Form.Coder.Nested.Data structure
     private static func parseAccumulateValues(
         _ query: String,
         sort: Bool
-    ) -> HTML.Form.Coder.Nested.Data {
-        var params: [String: HTML.Form.Coder.Nested.Data] = [:]
+    ) -> HTML.Element.Form.Coder.Nested.Data {
+        var params: [String: HTML.Element.Form.Coder.Nested.Data] = [:]
 
         for (name, value) in extractPairs(from: query, sort: sort) {
             let valueStr = value ?? ""
@@ -213,7 +213,7 @@ extension HTML.Form.Coder.Nested.Data {
         return result.current.isEmpty ? result.path : result.path + [result.current]
     }
 
-    /// Inserts a value at a given path into a HTML.Form.Coder.Nested.Data structure.
+    /// Inserts a value at a given path into a HTML.Element.Form.Coder.Nested.Data structure.
     ///
     /// Handles nested dictionaries and arrays, creating intermediate structures
     /// as needed.
@@ -221,12 +221,12 @@ extension HTML.Form.Coder.Nested.Data {
     /// - Parameters:
     ///   - value: The string value to insert
     ///   - path: Array of path components indicating where to insert
-    ///   - formData: The HTML.Form.Coder.Nested.Data structure to modify (in/out parameter)
+    ///   - formData: The HTML.Element.Form.Coder.Nested.Data structure to modify (in/out parameter)
     ///   - isArray: Function to determine if a path segment represents an array
     private static func insert(
         value: String,
         at path: [String],
-        into formData: inout HTML.Form.Coder.Nested.Data,
+        into formData: inout HTML.Element.Form.Coder.Nested.Data,
         isArray: @escaping (String) -> Bool
     ) {
         guard !path.isEmpty else {
@@ -254,7 +254,7 @@ extension HTML.Form.Coder.Nested.Data {
 
                     if path.count > 2 {
                         // Create nested structure
-                        var newElement = HTML.Form.Coder.Nested.Data.dictionary([:])
+                        var newElement = HTML.Element.Form.Coder.Nested.Data.dictionary([:])
                         insert(
                             value: value,
                             at: Array(path[2...]),
@@ -314,7 +314,7 @@ extension HTML.Form.Coder.Nested.Data {
                 // Recursively insert
                 insert(value: value, at: Array(path[2...]), into: &values[index], isArray: isArray)
             } else {
-                var nested = HTML.Form.Coder.Nested.Data.dictionary([:])
+                var nested = HTML.Element.Form.Coder.Nested.Data.dictionary([:])
                 insert(value: value, at: Array(path[1...]), into: &nested, isArray: isArray)
                 values.append(nested)
             }

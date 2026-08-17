@@ -1,5 +1,5 @@
 public import HTML_Standard
 
-extension HTML.Form.Coder.Strategy {
+extension HTML.Element.Form.Coder.Strategy {
     public enum Bool {}
 }
