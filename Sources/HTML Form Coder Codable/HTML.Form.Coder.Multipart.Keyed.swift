@@ -116,7 +116,10 @@ extension HTML.Form.Coder.Multipart {
             if let date = value as? Date {
                 let stringValue = encoder.coder.encode(date)
                 encoder.fields.append(
-                    HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: stringValue)
+                    HTML.Form.Coder.Multipart.Field(
+                        name: key.stringValue,
+                        value: stringValue
+                    )
                 )
                 return
             }
@@ -132,7 +135,10 @@ extension HTML.Form.Coder.Multipart {
                 let stringValue = customEncoder(value, key.stringValue)
             {
                 encoder.fields.append(
-                    HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: stringValue)
+                    HTML.Form.Coder.Multipart.Field(
+                        name: key.stringValue,
+                        value: stringValue
+                    )
                 )
                 return
             }
@@ -148,7 +154,10 @@ extension HTML.Form.Coder.Multipart {
             }
             if let jsonString = String(data: jsonData, encoding: .utf8) {
                 encoder.fields.append(
-                    HTML.Form.Coder.Multipart.Field(name: key.stringValue, value: jsonString)
+                    HTML.Form.Coder.Multipart.Field(
+                        name: key.stringValue,
+                        value: jsonString
+                    )
                 )
             }
         }

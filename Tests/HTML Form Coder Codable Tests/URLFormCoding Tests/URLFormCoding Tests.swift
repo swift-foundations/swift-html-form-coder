@@ -82,7 +82,8 @@ struct CustomStrategyTests {
     @Test("Custom parsing strategy with special delimiter")
     func testCustomParsingStrategy() throws {
         // Create a custom strategy that uses pipe | as separator
-        let customStrategy: @Sendable (String) -> HTML.Form.Coder.Decoder.Container = { query in
+        let customStrategy: @Sendable (String) -> HTML.Form.Coder.Decoder.Container = {
+            query in
             var params: [String: HTML.Form.Coder.Decoder.Container] = [:]
             let pairs = query.split(separator: "|")
 
@@ -120,7 +121,8 @@ struct CustomStrategyTests {
     @Test("Custom strategy with array support")
     func testCustomStrategyWithArrays() throws {
         // Custom strategy that handles comma-separated arrays
-        let customStrategy: @Sendable (String) -> HTML.Form.Coder.Decoder.Container = { query in
+        let customStrategy: @Sendable (String) -> HTML.Form.Coder.Decoder.Container = {
+            query in
             var params: [String: HTML.Form.Coder.Decoder.Container] = [:]
             let pairs = query.split(separator: "&")
 
@@ -281,7 +283,9 @@ struct URLComponentsIntegrationTests {
 
         // Decode back from URLComponents
         if let queryData = components.query?.data(using: .utf8) {
-            let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+            let decoder = HTML.Form.Coder.Decoder(
+                arrayParsingStrategy: .bracketsWithIndices
+            )
             let decoded = try decoder.decode(QueryModel.self, from: queryData)
 
             #expect(decoded.search == model.search)
@@ -506,8 +510,12 @@ struct MixedStrategyTests {
             let items: [String]
         }
 
-        let bracketsDecoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
-        let accumulateDecoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .accumulateValues)
+        let bracketsDecoder = HTML.Form.Coder.Decoder(
+            arrayParsingStrategy: .bracketsWithIndices
+        )
+        let accumulateDecoder = HTML.Form.Coder.Decoder(
+            arrayParsingStrategy: .accumulateValues
+        )
 
         // Correct combinations should work
         let decoded1 = try bracketsDecoder.decode(Model.self, from: bracketsData)

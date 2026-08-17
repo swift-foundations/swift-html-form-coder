@@ -212,8 +212,12 @@ private func makeCases() -> [Case] {
         Case(
             "date-formatted-yyyyMMdd",
             flatFixture,
-            encoder: HTML.Form.Coder.Encoder(dateEncodingStrategy: .formatted(yyyyMMddFormatter())),
-            decoder: HTML.Form.Coder.Decoder(dateDecodingStrategy: .formatted(yyyyMMddFormatter()))
+            encoder: HTML.Form.Coder.Encoder(
+                dateEncodingStrategy: .formatted(yyyyMMddFormatter())
+            ),
+            decoder: HTML.Form.Coder.Decoder(
+                dateDecodingStrategy: .formatted(yyyyMMddFormatter())
+            )
         ),
         // Foundation.Data axis
         Case(

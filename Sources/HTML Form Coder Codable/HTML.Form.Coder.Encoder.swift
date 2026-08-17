@@ -19,7 +19,8 @@ extension HTML.Form.Coder {
         public init(
             dataEncodingStrategy: HTML.Form.Coder.Strategy.Data.Encoding = .deferred,
             dateEncodingStrategy: HTML.Form.Coder.Strategy.Date.Encoding = .deferred,
-            arrayEncodingStrategy: HTML.Form.Coder.Strategy.Array.Encoding = .accumulateValues,
+            arrayEncodingStrategy: HTML.Form.Coder.Strategy.Array.Encoding =
+                .accumulateValues,
             boolEncodingStrategy: HTML.Form.Coder.Strategy.Bool.Encoding = .true
         ) {
             self.dataEncodingStrategy = dataEncodingStrategy

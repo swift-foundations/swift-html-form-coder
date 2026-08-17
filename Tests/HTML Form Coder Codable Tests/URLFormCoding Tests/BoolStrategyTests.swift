@@ -79,7 +79,9 @@ struct BoolStrategyTests {
 
         @Test("Custom bool encoding strategy")
         func testCustomStrategy() throws {
-            let encoder = HTML.Form.Coder.Encoder(boolEncodingStrategy: .custom { $0 ? "1" : "0" })
+            let encoder = HTML.Form.Coder.Encoder(
+                boolEncodingStrategy: .custom { $0 ? "1" : "0" }
+            )
 
             let data = try encoder.encode(Flag(name: "a", enabled: true))
             #expect(String(data: data, encoding: .utf8)!.contains("enabled=1"))
@@ -167,7 +169,9 @@ struct BoolStrategyTests {
 
         @Test("Custom bool decoding strategy")
         func testCustomStrategyDecoding() throws {
-            let decoder = HTML.Form.Coder.Decoder(boolDecodingStrategy: .custom { $0 == "on" })
+            let decoder = HTML.Form.Coder.Decoder(
+                boolDecodingStrategy: .custom { $0 == "on" }
+            )
 
             #expect(
                 try decoder.decode(Flag.self, from: Foundation.Data("name=a&enabled=on".utf8))

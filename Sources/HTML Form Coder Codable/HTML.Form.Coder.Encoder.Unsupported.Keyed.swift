@@ -17,7 +17,10 @@ extension HTML.Form.Coder.Encoder.Unsupported {
             )
         }
 
-        mutating func encode<T>(_ value: T, forKey key: Key) throws(HTML.Form.Coder.Encoder.Error)
+        mutating func encode<T>(
+            _ value: T,
+            forKey key: Key
+        ) throws(HTML.Form.Coder.Encoder.Error)
         where T: Encodable {
             throw HTML.Form.Coder.Encoder.Error.encodingError(
                 "superEncoder() is not supported in URL form encoding",

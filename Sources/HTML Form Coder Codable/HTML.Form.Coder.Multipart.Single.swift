@@ -16,7 +16,9 @@ extension HTML.Form.Coder.Multipart {
 
         mutating func encode(_ value: Bool) {
             let stringValue = encoder.coder.encode(value)
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: stringValue))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: stringValue)
+            )
         }
 
         mutating func encode(_ value: String) {
@@ -24,51 +26,75 @@ extension HTML.Form.Coder.Multipart {
         }
 
         mutating func encode(_ value: Double) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: Float) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: Int) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: Int8) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: Int16) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: Int32) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: Int64) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: UInt) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: UInt8) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: UInt16) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: UInt32) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode(_ value: UInt64) {
-            encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: String(value)))
+            encoder.fields.append(
+                HTML.Form.Coder.Multipart.Field(name: "", value: String(value))
+            )
         }
 
         mutating func encode<T>(_ value: T) throws(HTML.Form.Coder.Multipart.Error)
@@ -76,7 +102,9 @@ extension HTML.Form.Coder.Multipart {
             // Handle Date
             if let date = value as? Date {
                 let stringValue = encoder.coder.encode(date)
-                encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: stringValue))
+                encoder.fields.append(
+                    HTML.Form.Coder.Multipart.Field(name: "", value: stringValue)
+                )
                 return
             }
 
@@ -84,7 +112,9 @@ extension HTML.Form.Coder.Multipart {
             if let customEncoder = encoder.coder.custom,
                 let stringValue = customEncoder(value, "")
             {
-                encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: stringValue))
+                encoder.fields.append(
+                    HTML.Form.Coder.Multipart.Field(name: "", value: stringValue)
+                )
                 return
             }
 
@@ -97,7 +127,9 @@ extension HTML.Form.Coder.Multipart {
                 throw HTML.Form.Coder.Multipart.Error.media(String(describing: error))
             }
             if let jsonString = String(data: jsonData, encoding: .utf8) {
-                encoder.fields.append(HTML.Form.Coder.Multipart.Field(name: "", value: jsonString))
+                encoder.fields.append(
+                    HTML.Form.Coder.Multipart.Field(name: "", value: jsonString)
+                )
             }
         }
     }

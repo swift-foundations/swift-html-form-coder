@@ -22,7 +22,8 @@ extension HTML.Form.Coder {
         public init(
             dataDecodingStrategy: HTML.Form.Coder.Strategy.Data.Decoding = .deferred,
             dateDecodingStrategy: HTML.Form.Coder.Strategy.Date.Decoding = .deferred,
-            arrayParsingStrategy: HTML.Form.Coder.Strategy.Array.Decoding = .accumulateValues,
+            arrayParsingStrategy: HTML.Form.Coder.Strategy.Array.Decoding =
+                .accumulateValues,
             boolDecodingStrategy: HTML.Form.Coder.Strategy.Bool.Decoding = .true
         ) {
             self.dataDecodingStrategy = dataDecodingStrategy

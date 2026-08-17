@@ -114,7 +114,9 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
 
     @Test
     func `Handle percent-encoded values`() {
-        let result = HTML.Form.Coder.Nested.Data.parse("name=John+Doe&message=Hello%20World")
+        let result = HTML.Form.Coder.Nested.Data.parse(
+            "name=John+Doe&message=Hello%20World"
+        )
 
         guard case .dictionary(let dict) = result else {
             Issue.record("Expected dictionary")
@@ -141,7 +143,8 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
         #expect(pairs[0].1 == "Test")
 
         #expect(
-            HTML.Form.Coder.Nested.Data.parse("name=Test&") == .dictionary(["name": .value("Test")])
+            HTML.Form.Coder.Nested.Data.parse("name=Test&")
+                == .dictionary(["name": .value("Test")])
         )
     }
 
@@ -153,7 +156,8 @@ struct `HTML.Form.Coder.Nested.Data Parser Tests` {
         #expect(pairs[0].1 == "Test")
 
         #expect(
-            HTML.Form.Coder.Nested.Data.parse("&name=Test") == .dictionary(["name": .value("Test")])
+            HTML.Form.Coder.Nested.Data.parse("&name=Test")
+                == .dictionary(["name": .value("Test")])
         )
     }
 

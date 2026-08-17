@@ -299,7 +299,9 @@ struct FormEncoderTests {
         func testEncodesDatesWithCustomFormatter() throws {
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
-            let encoder = HTML.Form.Coder.Encoder(dateEncodingStrategy: .formatted(formatter))
+            let encoder = HTML.Form.Coder.Encoder(
+                dateEncodingStrategy: .formatted(formatter)
+            )
 
             let date = Date(timeIntervalSince1970: 1_234_567_890)  // 2009-02-13
             let user = UserWithDates(
@@ -324,7 +326,9 @@ struct FormEncoderTests {
 
         @Test("Encodes data as array by default")
         func testEncodesDataAsArrayByDefault() throws {
-            let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+            let encoder = HTML.Form.Coder.Encoder(
+                arrayEncodingStrategy: .bracketsWithIndices
+            )
             let testData = Foundation.Data("Hello".utf8)  // Shorter for clearer testing
             let user = UserWithData(
                 name: "Maya",
@@ -385,8 +389,12 @@ struct FormEncoderTests {
 
         @Test("Arrays round-trip correctly with bracketsWithIndices strategy")
         func testArraysRoundTripCorrectly() throws {
-            let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
-            let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+            let encoder = HTML.Form.Coder.Encoder(
+                arrayEncodingStrategy: .bracketsWithIndices
+            )
+            let decoder = HTML.Form.Coder.Decoder(
+                arrayParsingStrategy: .bracketsWithIndices
+            )
 
             let original = UserWithArrays(
                 name: "Penny",

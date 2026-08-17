@@ -580,20 +580,24 @@ struct FormDecoderTests {
                                     .singleValue(
                                         existingValue
                                     )
-                                let newContainer = HTML.Form.Coder.Decoder.Container.singleValue(
-                                    value
-                                )
+                                let newContainer = HTML.Form.Coder.Decoder.Container
+                                    .singleValue(
+                                        value
+                                    )
                                 params[key] = .unkeyed([existingContainer, newContainer])
                             } else if case .unkeyed(let existingValues) = existing {
                                 var newValues = existingValues
-                                let valueContainer = HTML.Form.Coder.Decoder.Container.singleValue(
-                                    value
-                                )
+                                let valueContainer = HTML.Form.Coder.Decoder.Container
+                                    .singleValue(
+                                        value
+                                    )
                                 newValues.append(valueContainer)
                                 params[key] = .unkeyed(newValues)
                             }
                         } else {
-                            let container = HTML.Form.Coder.Decoder.Container.singleValue(value)
+                            let container = HTML.Form.Coder.Decoder.Container.singleValue(
+                                value
+                            )
                             params[key] = container
                         }
                     }
@@ -827,8 +831,12 @@ struct FormDecoderTests {
 
         @Test("Round-trips arrays with matching strategies")
         func testRoundTripsArraysWithMatchingStrategies() throws {
-            let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
-            let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+            let encoder = HTML.Form.Coder.Encoder(
+                arrayEncodingStrategy: .bracketsWithIndices
+            )
+            let decoder = HTML.Form.Coder.Decoder(
+                arrayParsingStrategy: .bracketsWithIndices
+            )
 
             let original = UserWithArrays(
                 name: "Array User",
@@ -948,7 +956,9 @@ private func accumulateValues(_ query: String) -> HTML.Form.Coder.Decoder.Contai
             let container = HTML.Form.Coder.Decoder.Container.singleValue(values[0])
             params[name] = container
         } else {
-            let containers = values.map { HTML.Form.Coder.Decoder.Container.singleValue($0) }
+            let containers = values.map {
+                HTML.Form.Coder.Decoder.Container.singleValue($0)
+            }
             params[name] = .unkeyed(containers)
         }
     }

@@ -71,8 +71,12 @@ struct DefaultStrategyMismatchTests {
 
         // Test 2: Both use bracketsWithIndices
         do {
-            let encoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
-            let decoder = HTML.Form.Coder.Decoder(arrayParsingStrategy: .bracketsWithIndices)
+            let encoder = HTML.Form.Coder.Encoder(
+                arrayEncodingStrategy: .bracketsWithIndices
+            )
+            let decoder = HTML.Form.Coder.Decoder(
+                arrayParsingStrategy: .bracketsWithIndices
+            )
 
             let encoded = try encoder.encode(original)
             let encodedString = String(data: encoded, encoding: .utf8)!
@@ -104,9 +108,13 @@ struct DefaultStrategyMismatchTests {
         )
 
         // Show what each strategy produces
-        let accumulateEncoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .accumulateValues)
+        let accumulateEncoder = HTML.Form.Coder.Encoder(
+            arrayEncodingStrategy: .accumulateValues
+        )
         let bracketsEncoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .brackets)
-        let indicesEncoder = HTML.Form.Coder.Encoder(arrayEncodingStrategy: .bracketsWithIndices)
+        let indicesEncoder = HTML.Form.Coder.Encoder(
+            arrayEncodingStrategy: .bracketsWithIndices
+        )
 
         let accumulateOutput = String(data: try accumulateEncoder.encode(model), encoding: .utf8)!
         let bracketsOutput = String(data: try bracketsEncoder.encode(model), encoding: .utf8)!

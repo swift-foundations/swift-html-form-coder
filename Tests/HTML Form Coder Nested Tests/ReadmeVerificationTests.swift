@@ -36,7 +36,9 @@ struct `README Verification` {
 
     @Test
     func `README Line 41-48: Parse nested objects`() throws {
-        let user = HTML.Form.Coder.Nested.Data.parse("user[name]=John&user[email]=john@example.com")
+        let user = HTML.Form.Coder.Nested.Data.parse(
+            "user[name]=John&user[email]=john@example.com"
+        )
 
         let userDict = user.dictionaryValue?["user"]?.dictionaryValue
         #expect(userDict?["name"]?.stringValue == "John")
