@@ -10,7 +10,7 @@ Add the package to your `Package.swift` dependencies:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/swift-foundations/swift-html-form-coder.git", branch: "main")
+    .package(url: "https://github.com/swift-compositions/swift-html-form-coder.git", branch: "main")
 ]
 ```
 

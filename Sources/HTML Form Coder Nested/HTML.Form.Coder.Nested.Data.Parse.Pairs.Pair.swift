@@ -1,6 +1,6 @@
 public import HTML_Form_Coder
 public import HTML_Standard
-public import Parser_Primitives
+public import Parser
 
 extension HTML.Form.Coder.Nested.Data.Parse.Pairs {
     public struct Pair: Sendable {

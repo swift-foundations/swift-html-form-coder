@@ -21,17 +21,17 @@ let package = Package(
         .package(url: "https://github.com/swift-standards/swift-html-standard.git", branch: "main"),
         .package(url: "https://github.com/swift-whatwg/swift-whatwg-html.git", branch: "main"),
         .package(url: "https://github.com/swift-whatwg/swift-whatwg-url.git", branch: "main"),
-        .package(url: "https://github.com/swift-foundations/swift-http-body.git", branch: "main"),
+        .package(url: "https://github.com/swift-compositions/swift-http-body.git", branch: "main"),
         .package(
             url: "https://github.com/swift-standards/swift-media-type-standard.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-byte-primitives.git",
+            url: "https://github.com/swift-molecules/swift-byte.git",
             branch: "main"
         ),
         .package(
-            url: "https://github.com/swift-primitives/swift-parser-primitives.git",
+            url: "https://github.com/swift-molecules/swift-parser.git",
             branch: "main"
         ),
         .package(url: "https://github.com/swift-ieee/swift-ieee-754.git", branch: "main"),
@@ -48,7 +48,7 @@ let package = Package(
                 .product(name: "WHATWG HTML FormData", package: "swift-whatwg-html"),
                 .product(name: "WHATWG Form URL Encoded", package: "swift-whatwg-url"),
                 .product(name: "HTTP Body", package: "swift-http-body"),
-                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+                .product(name: "Byte Primitive", package: "swift-byte"),
             ]
         ),
         .target(
@@ -59,7 +59,7 @@ let package = Package(
                 .product(name: "WHATWG HTML FormData", package: "swift-whatwg-html"),
                 .product(name: "HTTP Body", package: "swift-http-body"),
                 .product(name: "Media Type Standard", package: "swift-media-type-standard"),
-                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+                .product(name: "Byte Primitive", package: "swift-byte"),
                 .product(name: "RFC 2045", package: "swift-rfc-2045"),
                 .product(name: "RFC 2046", package: "swift-rfc-2046"),
                 .product(name: "RFC 2183", package: "swift-rfc-2183"),
@@ -73,7 +73,7 @@ let package = Package(
                 .product(name: "HTML Standard", package: "swift-html-standard"),
                 .product(name: "IEEE 754", package: "swift-ieee-754"),
                 .product(name: "WHATWG Form URL Encoded", package: "swift-whatwg-url"),
-                .product(name: "Parser Primitives", package: "swift-parser-primitives"),
+                .product(name: "Parser", package: "swift-parser"),
             ]
         ),
         .target(
@@ -87,7 +87,7 @@ let package = Package(
                 .product(name: "WHATWG Form URL Encoded", package: "swift-whatwg-url"),
                 .product(name: "HTTP Body", package: "swift-http-body"),
                 .product(name: "Media Type Standard", package: "swift-media-type-standard"),
-                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+                .product(name: "Byte Primitive", package: "swift-byte"),
                 .product(name: "RFC 2045", package: "swift-rfc-2045"),
                 .product(name: "RFC 2046", package: "swift-rfc-2046"),
                 .product(name: "RFC 2183", package: "swift-rfc-2183"),
@@ -100,7 +100,7 @@ let package = Package(
                 "HTML Form Coder",
                 .product(name: "HTML Standard", package: "swift-html-standard"),
                 .product(name: "WHATWG HTML FormData", package: "swift-whatwg-html"),
-                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+                .product(name: "Byte Primitive", package: "swift-byte"),
             ],
             path: "Tests/HTML Form Coder Tests"
         ),
@@ -113,7 +113,7 @@ let package = Package(
                 .product(name: "WHATWG HTML Forms", package: "swift-whatwg-html"),
                 .product(name: "WHATWG HTML FormData", package: "swift-whatwg-html"),
                 .product(name: "HTTP Body", package: "swift-http-body"),
-                .product(name: "Byte Primitive", package: "swift-byte-primitives"),
+                .product(name: "Byte Primitive", package: "swift-byte"),
                 .product(name: "RFC 2045", package: "swift-rfc-2045"),
                 .product(name: "RFC 2046", package: "swift-rfc-2046"),
                 .product(name: "RFC 2183", package: "swift-rfc-2183"),
